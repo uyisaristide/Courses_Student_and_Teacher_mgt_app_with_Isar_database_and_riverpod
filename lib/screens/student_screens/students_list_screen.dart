@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:isar_project/Providers/students/providers.dart';
 import 'package:isar_project/contollers/isar_servise.dart';
 import 'package:isar_project/models/student.dart';
 import 'package:isar_project/screens/student_screens/student_details.dart';
@@ -7,38 +9,28 @@ import 'package:isar_project/screens/student_screens/student_details.dart';
 import '../../constants.dart';
 import '../../models/course.dart';
 
-class StudentsScreen extends StatefulWidget {
+class StudentsScreen extends ConsumerStatefulWidget {
   const StudentsScreen({super.key});
 
   @override
-  State<StudentsScreen> createState() => _StudentsScreenState();
+  ConsumerState<StudentsScreen> createState() => _StudentsScreenState();
 }
 
-class _StudentsScreenState extends State<StudentsScreen> {
+class _StudentsScreenState extends ConsumerState<StudentsScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController nameController = TextEditingController();
 
-  List<Student> listStudents = [];
-  // late Course course;
-  var isars = IsarServise();
-
-  getStudentsList() async {
-    var students = await isars.getAllStusents();
-    setState(() {
-      listStudents = students;
-    });
-  }
-
   @override
   void initState() {
     // TODO: implement initState
-    getStudentsList();
+    ref.read(studentProvider.notifier).getAllStudents();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var listStudents = ref.watch(studentProvider);
     return Material(
       child: Stack(
         children: [

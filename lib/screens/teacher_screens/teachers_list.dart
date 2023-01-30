@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:isar_project/Providers/teachers/providers.dart';
 import 'package:isar_project/contollers/isar_servise.dart';
 import 'package:isar_project/models/student.dart';
 import 'package:isar_project/models/teacher.dart';
@@ -8,38 +10,26 @@ import 'package:isar_project/screens/teacher_screens/teacher_details_screen.dart
 
 import '../../constants.dart';
 
-class TeachersScreen extends StatefulWidget {
+class TeachersScreen extends ConsumerStatefulWidget {
   const TeachersScreen({super.key});
 
   @override
-  State<TeachersScreen> createState() => _StudentsScreenState();
+  ConsumerState<TeachersScreen> createState() => _StudentsScreenState();
 }
 
-class _StudentsScreenState extends State<TeachersScreen> {
+class _StudentsScreenState extends ConsumerState<TeachersScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  final TextEditingController nameController = TextEditingController();
-
-  List<Teacher> listTeachers = [];
-  // late Course course;
-  var isars = IsarServise();
-
-  getAllTeachers() async {
-    var teachers = await isars.getAllTeachers();
-    setState(() {
-      listTeachers = teachers;
-    });
-  }
 
   @override
   void initState() {
     // TODO: implement initState
-    getAllTeachers();
+    ref.read(teacherProvider.notifier).getAllTeachers();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var listTeachers = ref.watch(teacherProvider);
     return Material(
       child: Stack(
         children: [
