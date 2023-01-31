@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:isar_project/contollers/isar_servise.dart';
+import 'package:isar_project/Providers/courses/providers.dart';
+import 'package:isar_project/Providers/teachers/providers.dart';
+import 'package:isar_project/models/course.dart';
 import 'package:isar_project/models/teacher.dart';
 
 import '../../constants.dart';
-import '../../models/course.dart';
 import '../auth_screens/validators/validator.dart';
 import '../auth_screens/widgets/authentication_button.dart';
 import '../auth_screens/widgets/custom_text_field.dart';
 
-class TeacherRegisterScreen extends StatefulWidget {
-  TeacherRegisterScreen({super.key});
+class TeacherRegisterScreen extends ConsumerStatefulWidget {
+  const TeacherRegisterScreen({super.key});
 
   @override
-  State<TeacherRegisterScreen> createState() => _TeacherRegisterScreenState();
+  ConsumerState<TeacherRegisterScreen> createState() =>
+      _TeacherRegisterScreenState();
 }
 
-class _TeacherRegisterScreenState extends State<TeacherRegisterScreen> {
+class _TeacherRegisterScreenState extends ConsumerState<TeacherRegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController nameController = TextEditingController();
@@ -24,33 +27,18 @@ class _TeacherRegisterScreenState extends State<TeacherRegisterScreen> {
       TextEditingController();
   final TextEditingController genderCotroller = TextEditingController();
   final TextEditingController departmentController = TextEditingController();
-
-  List<Course> _listCourse = [];
-  Course? selectedCourse;
-  var isars = IsarServise();
-
-  getList() async {
-    var _listCourses = await isars.getAllCourses();
-    setState(() {
-      _listCourse = _listCourses;
-    });
-  }
-
-  getSelectedCourse(Course course) {
-    setState(() {
-      course = course;
-    });
-  }
-
+  final teacherState = StateProvider<Course?>((ref) => null);
   @override
   void initState() {
     // TODO: implement initState
-    getList();
+    ref.read(createCourseProvider.notifier).getAllCourses();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var listCourse = ref.watch(createCourseProvider);
+    var selectedCourse = ref.watch(teacherState);
     return Material(
       child: Stack(
         children: [
@@ -127,20 +115,18 @@ class _TeacherRegisterScreenState extends State<TeacherRegisterScreen> {
                             height: 200,
                             child: ListView.builder(
                                 physics: const BouncingScrollPhysics(),
-                                itemCount: _listCourse.length,
+                                itemCount: listCourse.length,
                                 shrinkWrap: true,
                                 itemBuilder: (BuildContext context, int index) {
-                                  // selectedCourse = _listCourse[index];
                                   return RadioListTile(
                                     activeColor: kDarkGreenColor,
-                                    value: _listCourse[index],
+                                    value: listCourse[index],
                                     groupValue: selectedCourse,
                                     onChanged: (currentCourse) {
-                                      setState(() {
-                                        selectedCourse = _listCourse[index];
-                                      });
+                                      ref.read(teacherState.notifier).state =
+                                          listCourse[index];
                                     },
-                                    title: Text(_listCourse[index].couseName),
+                                    title: Text(listCourse[index].couseName),
                                     selected: false,
                                   );
                                 }),
@@ -183,8 +169,10 @@ class _TeacherRegisterScreenState extends State<TeacherRegisterScreen> {
                                     department: departmentController.text,
                                     gender: genderCotroller.text);
                                 newTeacher.course.value = selectedCourse;
-                                IsarServise isar = IsarServise();
-                                isar.saveTeacher(newTeacher);
+
+                                ref
+                                    .read(teacherProvider.notifier)
+                                    .saveTeacher(newTeacher);
 
                                 context.push('/teachers');
                               }

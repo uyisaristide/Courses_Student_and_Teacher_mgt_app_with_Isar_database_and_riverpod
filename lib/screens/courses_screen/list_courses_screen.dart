@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:isar_project/Providers/courses/providers.dart';
 import 'package:isar_project/contollers/isar_servise.dart';
 import 'package:isar_project/models/teacher.dart';
 
@@ -10,34 +12,26 @@ import '../auth_screens/widgets/authentication_button.dart';
 import '../auth_screens/widgets/custom_text_field.dart';
 import 'course_details.dart';
 
-class CoursesScreen extends StatefulWidget {
+class CoursesScreen extends ConsumerStatefulWidget {
   CoursesScreen({super.key});
 
   @override
-  State<CoursesScreen> createState() => _CoursesScreenState();
+  ConsumerState<CoursesScreen> createState() => _CoursesScreenState();
 }
 
-class _CoursesScreenState extends State<CoursesScreen> {
-  List<Course> _listCourse = [];
-  // late Course course;
-  var isars = IsarServise();
-
-  getList() async {
-    var _listCourses = await isars.getAllCourses();
-    setState(() {
-      _listCourse = _listCourses;
-    });
-  }
+class _CoursesScreenState extends ConsumerState<CoursesScreen> {
+ 
 
   @override
   void initState() {
     // TODO: implement initState
-    getList();
+    ref.read(createCourseProvider.notifier).getAllCourses();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var listCourse = ref.watch(createCourseProvider);
     return Material(
       child: Stack(
         children: [
@@ -70,13 +64,13 @@ class _CoursesScreenState extends State<CoursesScreen> {
                             height: 300,
                             child: ListView.builder(
                                 physics: const BouncingScrollPhysics(),
-                                itemCount: _listCourse.length,
+                                itemCount: listCourse.length,
                                 shrinkWrap: true,
                                 itemBuilder: (BuildContext context, int index) {
                                   return ListTile(
                                     onTap: () {
                                       context.push('/courseDetails',
-                                          extra: _listCourse[index]);
+                                          extra: listCourse[index]);
                                       // Navigator.push(
                                       //   context,
                                       //   MaterialPageRoute(
@@ -91,7 +85,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 40),
                                       child: Text(
-                                        _listCourse[index].couseName,
+                                        listCourse[index].couseName,
                                         style: TextStyle(fontSize: 20),
                                       ),
                                     ),

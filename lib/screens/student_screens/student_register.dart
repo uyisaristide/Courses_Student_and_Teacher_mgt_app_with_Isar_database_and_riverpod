@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:isar_project/Providers/courses/providers.dart';
+import 'package:isar_project/Providers/students/providers.dart';
 import 'package:isar_project/contollers/isar_servise.dart';
 import 'package:isar_project/models/course.dart';
 import 'package:isar_project/models/student.dart';
@@ -10,14 +13,15 @@ import '../auth_screens/validators/validator.dart';
 import '../auth_screens/widgets/authentication_button.dart';
 import '../auth_screens/widgets/custom_text_field.dart';
 
-class StudentRegisterScreen extends StatefulWidget {
+class StudentRegisterScreen extends ConsumerStatefulWidget {
   const StudentRegisterScreen({super.key});
 
   @override
-  State<StudentRegisterScreen> createState() => _StudentRegisterScreenState();
+  ConsumerState<StudentRegisterScreen> createState() =>
+      _StudentRegisterScreenState();
 }
 
-class _StudentRegisterScreenState extends State<StudentRegisterScreen> {
+class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController nameController = TextEditingController();
@@ -25,27 +29,19 @@ class _StudentRegisterScreenState extends State<StudentRegisterScreen> {
   final TextEditingController genderCotroller = TextEditingController();
   final TextEditingController departmentController = TextEditingController();
 
-  bool checkValue = false;
-
-  List<Course> _listCourse = [];
-  var isars = IsarServise();
-  List<Course> selectedCourses = [];
-  getList() async {
-    var _listCourses = await isars.getAllCourses();
-    setState(() {
-      _listCourse = _listCourses;
-    });
-  }
+  var selectedCourseProvider = StateProvider<List<Course>>((ref) => []);
 
   @override
   void initState() {
     // TODO: implement initState
-    getList();
+    ref.read(createCourseProvider.notifier).getAllCourses();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var listCourse = ref.watch(createCourseProvider);
+    var selectedCourses = ref.watch(selectedCourseProvider);
     return Material(
       child: Stack(
         children: [
@@ -122,25 +118,45 @@ class _StudentRegisterScreenState extends State<StudentRegisterScreen> {
                             height: 200,
                             child: ListView.builder(
                                 physics: const BouncingScrollPhysics(),
-                                itemCount: _listCourse.length,
+                                itemCount: listCourse.length,
                                 shrinkWrap: false,
                                 itemBuilder: (BuildContext context, int index) {
                                   return CheckboxListTile(
-                                    title: Text(_listCourse[index].couseName),
-                                    value: _listCourse[index].isSelected,
-                                    selected: _listCourse[index].isSelected,
+                                    title: Text(listCourse[index].couseName),
+                                    value: listCourse[index].isSelected,
+                                    selected: listCourse[index].isSelected,
                                     onChanged: (value) {
-                                      setState(() {
-                                        _listCourse[index].isSelected = value!;
-                                        if (selectedCourses
-                                            .contains(_listCourse[index])) {
-                                          selectedCourses
-                                              .remove(_listCourse[index]);
-                                        } else {
-                                          selectedCourses
-                                              .add(_listCourse[index]);
-                                        }
-                                      });
+                                      // ref
+                                      //         .read(selectedCourseProvider.notifier)
+                                      //         .state =
+                                      //     selectedCourses
+                                      //         .remove(listCourse[index]);
+                                      // setState(() {
+                                      listCourse[index].isSelected = value!;
+                                      if (selectedCourses
+                                          .contains(listCourse[index])) {
+                                        var rem = selectedCourses
+                                            .where((element) =>
+                                                element != listCourse[index])
+                                            .toList();
+                                        ref
+                                            .read(
+                                                selectedCourseProvider.notifier)
+                                            .state = rem;
+                                        // selectedCourses
+                                        //     .remove(listCourse[index]);
+                                      } else {
+                                        // print(
+                                        //     "This is data: ${selectedCourses.runtimeType}");
+                                        ref
+                                            .read(
+                                                selectedCourseProvider.notifier)
+                                            .state = [
+                                          ...ref.watch(selectedCourseProvider),
+                                          listCourse[index]
+                                        ];
+                                      }
+                                      // });
                                     },
                                     activeColor: kDarkGreenColor,
                                     checkColor: Colors.white,
@@ -186,9 +202,10 @@ class _StudentRegisterScreenState extends State<StudentRegisterScreen> {
                                     gender: genderCotroller.text);
 
                                 newStudent.courses.addAll(selectedCourses);
-                                IsarServise isar = IsarServise();
 
-                                isar.saveStudent(newStudent);
+                                ref
+                                    .read(studentProvider.notifier)
+                                    .saveStudent(newStudent);
 
                                 context.push('/students');
                               }

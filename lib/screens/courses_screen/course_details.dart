@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:isar_project/Providers/students/providers.dart';
 import 'package:isar_project/contollers/isar_servise.dart';
 import 'package:isar_project/models/student.dart';
 import 'package:isar_project/models/teacher.dart';
@@ -7,42 +9,30 @@ import 'package:isar_project/models/teacher.dart';
 import '../../constants.dart';
 import '../../models/course.dart';
 
-class CourseDetailsScreen extends StatefulWidget {
+class CourseDetailsScreen extends ConsumerStatefulWidget {
   Course course;
   CourseDetailsScreen({super.key, required this.course});
 
   @override
-  State<CourseDetailsScreen> createState() => _CourseDetailsScreenState();
+  ConsumerState<CourseDetailsScreen> createState() =>
+      _CourseDetailsScreenState();
 }
 
-class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
+class _CourseDetailsScreenState extends ConsumerState<CourseDetailsScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final TextEditingController nameController = TextEditingController();
-
-  List<Student> studentsList = [];
-  // late Course course;
-  var isars = IsarServise();
-  Teacher? teacher;
-
-  getSudentsList() async {
-    var students = await isars.getStudentFor(widget.course);
-    var myTeacher = await isars.getTeacherFor(widget.course);
-    setState(() {
-      studentsList = students;
-      teacher = myTeacher;
-    });
-  }
+  // Teacher? teacher;
 
   @override
   void initState() {
-    // TODO: implement initState
-    getSudentsList();
+    ref.read(studentProvider.notifier).getStudentFor(widget.course);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var studentsList = ref.watch(studentProvider);
+    var teacher = widget.course.teacher.value;
     return Material(
       child: Stack(
         children: [
@@ -138,7 +128,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 40),
                                   child: Text(
-                                    teacher!.name,
+                                    teacher.name,
                                     style: const TextStyle(fontSize: 20),
                                   ),
                                 ),

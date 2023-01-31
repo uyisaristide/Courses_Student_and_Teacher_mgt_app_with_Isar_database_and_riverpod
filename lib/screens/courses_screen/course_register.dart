@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:isar_project/Providers/courses/providers.dart';
 import 'package:isar_project/contollers/isar_servise.dart';
 import 'package:isar_project/models/course.dart';
 
@@ -8,7 +10,7 @@ import '../auth_screens/validators/validator.dart';
 import '../auth_screens/widgets/authentication_button.dart';
 import '../auth_screens/widgets/custom_text_field.dart';
 
-class CourseRegisterScreen extends StatelessWidget {
+class CourseRegisterScreen extends ConsumerWidget {
   CourseRegisterScreen({super.key});
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -16,7 +18,7 @@ class CourseRegisterScreen extends StatelessWidget {
   final TextEditingController courseNameController = TextEditingController();
   final TextEditingController courseCreditsController = TextEditingController();
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Material(
       child: Stack(
         children: [
@@ -82,13 +84,16 @@ class CourseRegisterScreen extends StatelessWidget {
                             label: 'Register',
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                Course addedCourse = Course(
-                                    couseName: courseNameController.text,
-                                    credits: int.parse(
-                                        courseCreditsController.text));
-                                course.saveCourse(addedCourse);
+                                ref
+                                    .read(createCourseProvider.notifier)
+                                    .saveCourse(Course(
+                                        couseName: courseNameController.text,
+                                        credits: int.parse(
+                                            courseCreditsController.text)));
 
                                 context.push('/courses');
+
+                                
                               }
                             },
                           ),

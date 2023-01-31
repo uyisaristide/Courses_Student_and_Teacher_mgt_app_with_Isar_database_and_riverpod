@@ -1,59 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:isar_project/contollers/isar_servise.dart';
+import 'package:isar_project/Providers/courses/providers.dart';
 import 'package:isar_project/models/student.dart';
 import 'package:isar_project/models/teacher.dart';
 
 import '../../constants.dart';
-import '../../models/course.dart';
-import '../auth_screens/validators/validator.dart';
-import '../auth_screens/widgets/authentication_button.dart';
-import '../auth_screens/widgets/custom_text_field.dart';
 
-class StudentDetailsScreen extends StatefulWidget {
+class StudentDetailsScreen extends ConsumerStatefulWidget {
   Student student;
   StudentDetailsScreen({super.key, required this.student});
 
   @override
-  State<StudentDetailsScreen> createState() => _StudentDetailsScreenState();
+  ConsumerState<StudentDetailsScreen> createState() =>
+      _StudentDetailsScreenState();
 }
 
-class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
+class _StudentDetailsScreenState extends ConsumerState<StudentDetailsScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController nameController = TextEditingController();
 
-  List<Course> coursesList = [];
-  // late Course course;
-  var isars = IsarServise();
-
-  getCoursesFor() async {
-    var courses = await isars.getCourseFor(widget.student);
-    setState(() {
-      // courses.forEach((element) {
-      //   element.teacher.loadSync();
-      // });
-      coursesList = courses;
-    });
-  }
-
-  Teacher? teacher;
-  getTecherOfCourse(Course course) async {
-    var myTeacher = await isars.getTeacherFor(course);
-    setState(() {
-      teacher = myTeacher;
-    });
-  }
+ 
 
   @override
   void initState() {
-    // TODO: implement initState
-    getCoursesFor();
+    
+    ref.read(getCourseFor.notifier).getCourseFor(widget.student);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var coursesList = ref.watch(getCourseFor);
     return Material(
       child: Stack(
         children: [

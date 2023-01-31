@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:isar_project/database/isar.dart';
 import 'package:isar_project/models/course.dart';
 import 'package:isar_project/models/student.dart';
 import 'package:isar_project/models/teacher.dart';
@@ -20,8 +21,9 @@ import 'screens/courses_screen/list_courses_screen.dart';
 import 'screens/student_screens/student_details.dart';
 import 'screens/student_screens/students_list_screen.dart';
 
-
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await openDb();
   runApp(const ProviderScope(child: MyApp()));
 }
 
