@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:isar_project/Providers/courses/providers.dart';
 import 'package:isar_project/Providers/students/providers.dart';
-import 'package:isar_project/contollers/isar_servise.dart';
 import 'package:isar_project/models/course.dart';
 import 'package:isar_project/models/student.dart';
 
@@ -126,12 +124,7 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                                     value: listCourse[index].isSelected,
                                     selected: listCourse[index].isSelected,
                                     onChanged: (value) {
-                                      // ref
-                                      //         .read(selectedCourseProvider.notifier)
-                                      //         .state =
-                                      //     selectedCourses
-                                      //         .remove(listCourse[index]);
-                                      // setState(() {
+                                      
                                       listCourse[index].isSelected = value!;
                                       if (selectedCourses
                                           .contains(listCourse[index])) {
@@ -143,11 +136,9 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                                             .read(
                                                 selectedCourseProvider.notifier)
                                             .state = rem;
-                                        // selectedCourses
-                                        //     .remove(listCourse[index]);
+                                        
                                       } else {
-                                        // print(
-                                        //     "This is data: ${selectedCourses.runtimeType}");
+                                        
                                         ref
                                             .read(
                                                 selectedCourseProvider.notifier)
@@ -156,7 +147,7 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                                           listCourse[index]
                                         ];
                                       }
-                                      // });
+                                      
                                     },
                                     activeColor: kDarkGreenColor,
                                     checkColor: Colors.white,
