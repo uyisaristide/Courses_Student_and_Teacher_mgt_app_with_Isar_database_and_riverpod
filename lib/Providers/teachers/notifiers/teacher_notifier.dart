@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:isar_project/database/isar.dart';
-import 'package:isar_project/models/student.dart';
 import 'package:isar_project/models/teacher.dart';
 
 class TeacherNotifier extends StateNotifier<List<Teacher>> {

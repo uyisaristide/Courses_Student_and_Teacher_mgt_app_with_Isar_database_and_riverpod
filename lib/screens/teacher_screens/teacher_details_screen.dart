@@ -19,29 +19,9 @@ class _TeacherDetailsScreenState extends State<TeacherDetailsScreen> {
 
   final TextEditingController nameController = TextEditingController();
 
-  // List<Teacher> coursesList = [];
-  Course? course;
-  // late Course course;
-  var isars = IsarServise();
-
-  getCoursesFor() async {
-    var courses = await isars.getTeacherCourse(widget.teacher);
-    setState(() {
-      course = courses;
-    });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    getCoursesFor();
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    getCoursesFor();
+    var course = widget.teacher.course.value;
     return Material(
       child: Stack(
         children: [
@@ -132,7 +112,7 @@ class _TeacherDetailsScreenState extends State<TeacherDetailsScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 40),
                                     child: Text(
-                                      course!.couseName,
+                                      course.couseName,
                                       style: const TextStyle(fontSize: 20),
                                     ),
                                   ),

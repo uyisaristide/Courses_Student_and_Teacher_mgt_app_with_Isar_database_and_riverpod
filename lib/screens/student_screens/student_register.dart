@@ -29,9 +29,7 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
   final TextEditingController genderCotroller = TextEditingController();
   final TextEditingController departmentController = TextEditingController();
 
-  bool checkValue = false;
-  List<Course> selectedCourses = [];
-  
+  var selectedCourseProvider = StateProvider<List<Course>>((ref) => []);
 
   @override
   void initState() {
@@ -43,6 +41,7 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
   @override
   Widget build(BuildContext context) {
     var listCourse = ref.watch(createCourseProvider);
+    var selectedCourses = ref.watch(selectedCourseProvider);
     return Material(
       child: Stack(
         children: [
@@ -127,17 +126,37 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                                     value: listCourse[index].isSelected,
                                     selected: listCourse[index].isSelected,
                                     onChanged: (value) {
-                                      setState(() {
-                                        listCourse[index].isSelected = value!;
-                                        if (selectedCourses
-                                            .contains(listCourse[index])) {
-                                          selectedCourses
-                                              .remove(listCourse[index]);
-                                        } else {
-                                          selectedCourses
-                                              .add(listCourse[index]);
-                                        }
-                                      });
+                                      // ref
+                                      //         .read(selectedCourseProvider.notifier)
+                                      //         .state =
+                                      //     selectedCourses
+                                      //         .remove(listCourse[index]);
+                                      // setState(() {
+                                      listCourse[index].isSelected = value!;
+                                      if (selectedCourses
+                                          .contains(listCourse[index])) {
+                                        var rem = selectedCourses
+                                            .where((element) =>
+                                                element != listCourse[index])
+                                            .toList();
+                                        ref
+                                            .read(
+                                                selectedCourseProvider.notifier)
+                                            .state = rem;
+                                        // selectedCourses
+                                        //     .remove(listCourse[index]);
+                                      } else {
+                                        // print(
+                                        //     "This is data: ${selectedCourses.runtimeType}");
+                                        ref
+                                            .read(
+                                                selectedCourseProvider.notifier)
+                                            .state = [
+                                          ...ref.watch(selectedCourseProvider),
+                                          listCourse[index]
+                                        ];
+                                      }
+                                      // });
                                     },
                                     activeColor: kDarkGreenColor,
                                     checkColor: Colors.white,

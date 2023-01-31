@@ -3,6 +3,8 @@ import 'package:isar/isar.dart';
 import 'package:isar_project/database/isar.dart';
 import 'package:isar_project/models/student.dart';
 
+import '../../../models/course.dart';
+
 class StudentNotifier extends StateNotifier<List<Student>> {
   StudentNotifier() : super([]);
 
@@ -14,6 +16,16 @@ class StudentNotifier extends StateNotifier<List<Student>> {
 
   Future<List<Student>> getAllStudents() async {
     state = await isarDb.students.where().findAll();
+    return state;
+  }
+
+  Future<List<Student>> getStudentFor(Course course) async {
+    // final isar = await db;
+    state = await isarDb.students
+        .filter()
+        .courses((q) => q.idEqualTo(course.id))
+        .findAll();
+
     return state;
   }
 }

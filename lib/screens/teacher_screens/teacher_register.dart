@@ -118,18 +118,13 @@ class _TeacherRegisterScreenState extends ConsumerState<TeacherRegisterScreen> {
                                 itemCount: listCourse.length,
                                 shrinkWrap: true,
                                 itemBuilder: (BuildContext context, int index) {
-                                 
                                   return RadioListTile(
                                     activeColor: kDarkGreenColor,
                                     value: listCourse[index],
                                     groupValue: selectedCourse,
                                     onChanged: (currentCourse) {
-                                      
                                       ref.read(teacherState.notifier).state =
                                           listCourse[index];
-                                      ref
-                                          .read(selectCourseProvider.notifier)
-                                          .selectCourse(listCourse[index]);
                                     },
                                     title: Text(listCourse[index].couseName),
                                     selected: false,

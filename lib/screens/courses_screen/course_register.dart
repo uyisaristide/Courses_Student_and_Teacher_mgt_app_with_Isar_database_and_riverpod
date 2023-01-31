@@ -92,6 +92,8 @@ class CourseRegisterScreen extends ConsumerWidget {
                                             courseCreditsController.text)));
 
                                 context.push('/courses');
+
+                                
                               }
                             },
                           ),
