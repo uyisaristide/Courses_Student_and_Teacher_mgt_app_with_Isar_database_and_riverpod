@@ -3,62 +3,62 @@
       "title":"créer ",
       "subtitle": "Créer un nouveau compte",
       "form":{
-          "name":"Full Name",
-          "email":"Email",
-          "password":"Password",
-          "confirm": "Confirm Password"
+          "name":"Nom et prénom",
+          "email":"E-mail",
+          "password":"Mot de passe",
+          "confirm": "Confirmez le mot de passe"
       },
-      "question":"Already have an account ?",
-      "login":"Login",
-      "signUp": "Sign Up"
+      "question":"Vous avez déjà un compte ?",
+      "login":"Connexion",
+      "signUp": "S'inscrire"
     },
     "signIn":{
-      "title":"You are Welcome",
-      "subtitle": "Login to your account",
+      "title":"Vous êtes les bienvenus",
+      "subtitle": "Connectez-vous à votre compte",
       "form":{
-          "name":"Username",
-          "password":"Password"
+          "name":"Nom d'utilisateur",
+          "password":"Mot de passe"
       },
       "remember":"Remember Me",
-      "forgot": "Forgot Password ?",
-      "question":"Don't have and account",
-      "signUp": "Sign Up",
-      "login":"Login"
+      "forgot": "Souviens-toi de moi ?",
+      "question":"Tu n'as pas de compte",
+      "signUp": "S'inscrire",
+      "login":"Connexion"
     },
     "homeScreen":{
-      "title":"Welcome Here",
-      "student":"Student",
-      "course":"Course",
-      "teacher":"Teacher"
+      "title":"Bienvenue ",
+      "student":"Étudiant",
+      "course":"Cours",
+      "teacher":"Professeur"
     },
     "studentsScreen":{
-      "title":"Students",
-      "addNew":"To add new student click",
-      "add":"Add"
+      "title":"Étudiants",
+      "addNew":"Pour ajouter un nouvel étudiant, cliquez sur",
+      "add":"Ajouter"
     },
     "createStudent":{
-      "title":"STUDENT",
-      "subtitle":"register student",
+      "title":"ÉTUDIANT",
+      "subtitle":"inscrire un étudiant",
       "form":{
-          "name":"Full Name",
-          "regNo": "Registration number",
-          "gender":"Gender",
-          "department":"Ddepartment"
+          "name":"Nom et prénom",
+          "regNo": "Numéro d'enregistrement",
+          "gender":"Le sexe",
+          "department":"département"
       },
-      "register":"Register",
+      "register":"S'inscrire",
       "snackbar":{
-          "text":"You must select atleast one course!",
-          "ok": "Ok"
+          "text":"Vous devez sélectionner au moins un cours !",
+          "ok": "D'accord"
       }
     },
     "studentDetails":{
-      "title":"Details of {student}",
-      "about":"About Student",
-      "reg":"Reg number: ",
-      "name":"Name: ",
-      "department": "Department: ",
-      "course":"Courses Subscribed",
-      "teacher":"By Teacher {teacher}"
+      "title":"Les détails de {student}",
+      "about":"À propos de l'étudiant",
+      "reg":"Numéro d'enregistrement: ",
+      "name":"Nom: ",
+      "department": "Département: ",
+      "course":"Cours souscrits",
+      "teacher":"Par enseignant {teacher}"
     }
     
   }

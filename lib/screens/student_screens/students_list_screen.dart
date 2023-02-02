@@ -96,25 +96,30 @@ class _StudentsScreenState extends ConsumerState<StudentsScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Text(
-                                    'studentsScreen.addNew',
-                                    style: TextStyle(fontSize: 18.0),
-                                  ).tr(),
-                                  TextButton(
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(kFoamColor),
-                                      foregroundColor:
-                                          MaterialStateProperty.all(
-                                              kDarkGreenColor),
-                                    ),
-                                    onPressed: () {
-                                      context.push('/addStudent');
-                                    },
+                                  Flexible(
                                     child: const Text(
-                                      'studentsScreen.add',
-                                      style: TextStyle(fontSize: 20.0),
+                                      'studentsScreen.addNew',
+                                      style: TextStyle(fontSize: 18.0),
                                     ).tr(),
+                                  ),
+                                  Flexible(
+                                    child: TextButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                kFoamColor),
+                                        foregroundColor:
+                                            MaterialStateProperty.all(
+                                                kDarkGreenColor),
+                                      ),
+                                      onPressed: () {
+                                        context.push('/addStudent');
+                                      },
+                                      child: const Text(
+                                        'studentsScreen.add',
+                                        style: TextStyle(fontSize: 20.0),
+                                      ).tr(),
+                                    ),
                                   )
                                 ],
                               ),
