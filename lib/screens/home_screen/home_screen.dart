@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:isar_project/screens/home_screen/widgets/entity_button.dart';
@@ -28,13 +29,13 @@ class HomeScreen extends StatelessWidget {
                 alignment: Alignment.topCenter,
                 padding: const EdgeInsets.all(15),
                 child: const Text(
-                  'Welcome Here',
+                  'homeScreen.title',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                )),
+                ).tr()),
             EntityButtons(
               buttonColor: const Color(0Xff4267B2),
               mediaIcon: Icons.person_search_outlined,
-              media: 'Student',
+              media: 'homeScreen.student'.tr(),
               onPressed: () {
                 context.push('/students');
               },
@@ -42,7 +43,7 @@ class HomeScreen extends StatelessWidget {
             EntityButtons(
               buttonColor: const Color(0Xff1DA1F2),
               mediaIcon: Icons.book,
-              media: 'Course',
+              media: 'homeScreen.course'.tr(),
               onPressed: () {
                 context.push('/courses');
               },
@@ -50,7 +51,7 @@ class HomeScreen extends StatelessWidget {
             EntityButtons(
               buttonColor: const Color(0XfFEA4335),
               mediaIcon: Icons.chair,
-              media: 'Teacher',
+              media: 'homeScreen.teacher'.tr(),
               onPressed: () {
                 context.push('/teachers');
               },

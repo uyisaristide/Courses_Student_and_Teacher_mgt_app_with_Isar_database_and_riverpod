@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -21,11 +22,8 @@ class _StudentDetailsScreenState extends ConsumerState<StudentDetailsScreen> {
 
   final TextEditingController nameController = TextEditingController();
 
- 
-
   @override
   void initState() {
-    
     ref.read(getCourseFor.notifier).getCourseFor(widget.student);
     super.initState();
   }
@@ -41,13 +39,13 @@ class _StudentDetailsScreenState extends ConsumerState<StudentDetailsScreen> {
               elevation: 0,
               backgroundColor: Colors.grey.shade300,
               title: Text(
-                ' Details of ${widget.student.name} ',
+                'studentDetails.title',
                 style: TextStyle(
                   // fontSize: 32.0,
                   fontWeight: FontWeight.w600,
                   color: kDarkGreenColor,
                 ),
-              ),
+              ).tr(namedArgs: {'student': widget.student.name}),
             ),
             body: SafeArea(
               child: SingleChildScrollView(
@@ -63,21 +61,21 @@ class _StudentDetailsScreenState extends ConsumerState<StudentDetailsScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            ' About Student',
+                            'studentDetails.about',
                             style: TextStyle(
                               fontSize: 32.0,
                               fontWeight: FontWeight.w600,
                               color: kDarkGreenColor,
                             ),
-                          ),
+                          ).tr(),
                           const SizedBox(height: 20.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text(
-                                'Reg number: ',
+                                'studentDetails.reg',
                                 style: TextStyle(fontSize: 25),
-                              ),
+                              ).tr(),
                               Text(
                                 widget.student.regNumber,
                                 style: const TextStyle(fontSize: 25),
@@ -91,9 +89,9 @@ class _StudentDetailsScreenState extends ConsumerState<StudentDetailsScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text(
-                                'Name: ',
+                                'studentDetails.name',
                                 style: TextStyle(fontSize: 25),
-                              ),
+                              ).tr(),
                               Text(
                                 widget.student.name,
                                 style: const TextStyle(fontSize: 25),
@@ -107,26 +105,26 @@ class _StudentDetailsScreenState extends ConsumerState<StudentDetailsScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text(
-                                'Department : ',
+                                'studentDetails.department',
                                 style: TextStyle(fontSize: 25),
-                              ),
+                              ).tr(),
                               Text(
                                 widget.student.department,
                                 style: const TextStyle(fontSize: 25),
-                              ),
+                              ).tr(),
                             ],
                           ),
                           const SizedBox(
                             height: 50,
                           ),
                           Text(
-                            ' Courses Subscribed',
+                            'studentDetails.course',
                             style: TextStyle(
                               fontSize: 32.0,
                               fontWeight: FontWeight.w600,
                               color: kDarkGreenColor,
                             ),
-                          ),
+                          ).tr(),
                           const SizedBox(
                             height: 50,
                           ),
@@ -142,16 +140,9 @@ class _StudentDetailsScreenState extends ConsumerState<StudentDetailsScreen> {
                                         (BuildContext context, int index) {
                                       Teacher? teacher =
                                           coursesList[index].teacher.value;
-                                      // getTecherOfCourse(coursesList[index]);
+
                                       return ListTile(
-                                        onTap: () {
-                                          // Navigator.push(
-                                          //   context,
-                                          //   MaterialPageRoute(
-                                          //       builder: (context) =>
-                                          //           StudentDetailsScreen(course: studentsList[index],)),
-                                          // );
-                                        },
+                                        onTap: () {},
                                         focusColor: kFoamColor,
                                         title: Padding(
                                           padding: const EdgeInsets.symmetric(
@@ -164,8 +155,11 @@ class _StudentDetailsScreenState extends ConsumerState<StudentDetailsScreen> {
                                         ),
                                         subtitle: teacher == null
                                             ? const Text('Has no Teacher')
-                                            : Text(
-                                                'By Teacher ${teacher.name}'),
+                                            : const Text(
+                                                    'studentDetails.teacher')
+                                                .tr(namedArgs: {
+                                                "teacher": teacher.name
+                                              }),
                                         leading: CircleAvatar(
                                             backgroundColor: kDarkGreenColor,
                                             child: Text('${index + 1}')),

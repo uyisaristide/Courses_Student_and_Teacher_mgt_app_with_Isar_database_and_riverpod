@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -51,13 +52,13 @@ class _StudentsScreenState extends ConsumerState<StudentsScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              ' Students ',
+                              'studentsScreen.title',
                               style: TextStyle(
                                 fontSize: 32.0,
                                 fontWeight: FontWeight.w600,
                                 color: kDarkGreenColor,
                               ),
-                            ),
+                            ).tr(),
                             const SizedBox(
                               height: 50,
                             ),
@@ -96,9 +97,9 @@ class _StudentsScreenState extends ConsumerState<StudentsScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   const Text(
-                                    'To add new student click',
+                                    'studentsScreen.addNew',
                                     style: TextStyle(fontSize: 18.0),
-                                  ),
+                                  ).tr(),
                                   TextButton(
                                     style: ButtonStyle(
                                       backgroundColor:
@@ -111,9 +112,9 @@ class _StudentsScreenState extends ConsumerState<StudentsScreen> {
                                       context.push('/addStudent');
                                     },
                                     child: const Text(
-                                      'Add',
+                                      'studentsScreen.add',
                                       style: TextStyle(fontSize: 20.0),
-                                    ),
+                                    ).tr(),
                                   )
                                 ],
                               ),
