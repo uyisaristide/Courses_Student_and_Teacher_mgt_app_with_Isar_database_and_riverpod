@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -56,28 +57,28 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            ' STUDENT',
+                            'createStudent.title',
                             style: TextStyle(
                               fontSize: 32.0,
                               fontWeight: FontWeight.w600,
                               color: kDarkGreenColor,
                             ),
-                          ),
+                          ).tr(),
                           const SizedBox(height: 10.0),
                           Text(
-                            'register student',
+                            'createStudent.subtitle',
                             style: TextStyle(
                               color: kGreyColor,
                               fontSize: 16.0,
                             ),
-                          ),
+                          ).tr(),
                           const SizedBox(height: 40.0),
                           CustomTextField(
                             controller: nameController,
                             validator: (value) =>
                                 Validators.validateName(value!),
-                            hintText: 'Full Name',
-                            label: 'Full Name',
+                            hintText: 'createStudent.form.name'.tr(),
+                            label: 'createStudent.form.name'.tr(),
                             icon: Icons.person,
                             keyboardType: TextInputType.name,
                             onChanged: (value) {},
@@ -86,8 +87,8 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                             controller: regNumberController,
                             validator: (value) =>
                                 Validators.validateName(value!),
-                            hintText: 'Registration number',
-                            label: 'Registration number',
+                            hintText: 'createStudent.form.regNo'.tr(),
+                            label: 'createStudent.form.regNo'.tr(),
                             icon: Icons.person,
                             keyboardType: TextInputType.name,
                             onChanged: (value) {},
@@ -96,8 +97,8 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                             controller: genderCotroller,
                             validator: (value) =>
                                 Validators.validateNumber(value!),
-                            hintText: 'Gender',
-                            label: 'Gender',
+                            hintText: 'createStudent.form.gender'.tr(),
+                            label: 'createStudent.form.gender'.tr(),
                             icon: Icons.person,
                             keyboardType: TextInputType.name,
                             onChanged: (value) {},
@@ -106,8 +107,8 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                             controller: departmentController,
                             validator: (value) =>
                                 Validators.validateNumber(value!),
-                            hintText: 'Department',
-                            label: 'Department',
+                            hintText: 'createStudent.form.department'.tr(),
+                            label: 'createStudent.form.department'.tr(),
                             icon: Icons.person,
                             keyboardType: TextInputType.name,
                             onChanged: (value) {},
@@ -124,7 +125,6 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                                     value: listCourse[index].isSelected,
                                     selected: listCourse[index].isSelected,
                                     onChanged: (value) {
-                                      
                                       listCourse[index].isSelected = value!;
                                       if (selectedCourses
                                           .contains(listCourse[index])) {
@@ -136,9 +136,7 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                                             .read(
                                                 selectedCourseProvider.notifier)
                                             .state = rem;
-                                        
                                       } else {
-                                        
                                         ref
                                             .read(
                                                 selectedCourseProvider.notifier)
@@ -147,7 +145,6 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                                           listCourse[index]
                                         ];
                                       }
-                                      
                                     },
                                     activeColor: kDarkGreenColor,
                                     checkColor: Colors.white,
@@ -160,7 +157,7 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                         child: AuthenticationButton(
-                          label: 'Register',
+                          label: 'createStudent.register'.tr(),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               if (selectedCourses.isEmpty) {
@@ -168,18 +165,18 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                                     .showSnackBar(
                                   SnackBar(
                                       backgroundColor: Colors.red,
-                                      content: const SizedBox(
+                                      content: SizedBox(
                                         height: 80,
                                         child: Center(
-                                          child: Text(
-                                            'You must select atleast one course!',
+                                          child: const Text(
+                                            'createStudent.snackbar.text',
                                             style: TextStyle(fontSize: 24),
-                                          ),
+                                          ).tr(),
                                         ),
                                       ),
                                       action: SnackBarAction(
                                         textColor: Colors.white,
-                                        label: 'Ok',
+                                        label: 'createStudent.snackbar.ok'.tr(),
                                         onPressed: () {
                                           // Some code to undo the change.
                                         },

@@ -1,5 +1,6 @@
 // // ignore_for_file: deprecated_member_use
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:isar_project/screens/auth_screens/validators/validator.dart';
@@ -58,21 +59,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(
                             height: 70,
                             child: Text(
-                              'You are Welcome',
+                              'signIn.title',
                               style: TextStyle(
                                 fontSize: 32.0,
                                 fontWeight: FontWeight.w600,
                                 color: kDarkGreenColor,
                               ),
-                            ),
+                            ).tr(),
                           ),
                           Text(
-                            'Login to your account',
+                            'signIn.subtitle',
                             style: TextStyle(
                               color: kGreyColor,
                               fontSize: 15.0,
                             ),
-                          )
+                          ).tr()
                         ],
                       ),
 
@@ -82,8 +83,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           CustomTextField(
                             validator: (value) =>
                                 Validators.validateName(value!),
-                            hintText: 'Username',
-                            label: 'Username',
+                            hintText: 'signIn.form.name'.tr(),
+                            label: 'signIn.form.name'.tr(),
                             icon: Icons.person,
                             keyboardType: TextInputType.name,
                             onChanged: (value) {
@@ -93,8 +94,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           CustomTextField(
                             validator: (value) =>
                                 Validators.validatePassword(value!),
-                            hintText: 'Password',
-                            label: 'Password',
+                            hintText: 'signIn.form.password'.tr(),
+                            label: 'signIn.form.password'.tr(),
                             icon: Icons.lock,
                             obscureText: true,
                             keyboardType: TextInputType.visiblePassword,
@@ -122,12 +123,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                       },
                                     ),
                                     Text(
-                                      'Remember Me',
+                                      'signIn.remember',
                                       style: TextStyle(
                                         color: kGreyColor,
                                         fontSize: 14.0,
                                       ),
-                                    )
+                                    ).tr()
                                   ],
                                 ),
                                 TextButton(
@@ -137,8 +138,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         kDarkGreenColor),
                                   ),
                                   child: const Text(
-                                    'Forgot Password ?',
-                                  ),
+                                    'signIn.forgot',
+                                  ).tr(),
                                 )
                               ],
                             ),
@@ -151,9 +152,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text(
-                              'Don\'t have an account ?',
+                              'signIn.question',
                               style: TextStyle(fontSize: 14.0),
-                            ),
+                            ).tr(),
                             TextButton(
                               style: ButtonStyle(
                                 foregroundColor:
@@ -163,9 +164,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 context.push('/register');
                               },
                               child: const Text(
-                                'Sign up',
+                                'signIn.signUp',
                                 style: TextStyle(fontSize: 14.0),
-                              ),
+                              ).tr(),
                             )
                           ],
                         ),
@@ -181,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             AuthenticationButton(
-                              label: 'Log In',
+                              label: 'signIn.login'.tr(),
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
                                   context.push('/home');

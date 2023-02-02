@@ -1,0 +1,64 @@
+{
+  "signUp":{
+    "title":"Register",
+    "subtitle": "Create a new account",
+    "form":{
+        "name":"Full Name",
+        "email":"Email",
+        "password":"Password",
+        "confirm": "Confirm Password"
+    },
+    "question":"Already have an account ?",
+    "login":"Login",
+    "signUp": "Sign Up"
+  },
+  "signIn":{
+    "title":"You are Welcome",
+    "subtitle": "Login to your account",
+    "form":{
+        "name":"Username",
+        "password":"Password"
+    },
+    "remember":"Remember Me",
+    "forgot": "Forgot Password ?",
+    "question":"Don't have and account",
+    "signUp": "Sign Up",
+    "login":"Login"
+  },
+  "homeScreen":{
+    "title":"Welcome Here",
+    "student":"Student",
+    "course":"Course",
+    "teacher":"Teacher"
+  },
+  "studentsScreen":{
+    "title":"Students",
+    "addNew":"To add new student click",
+    "add":"Add"
+  },
+  "createStudent":{
+    "title":"STUDENT",
+    "subtitle":"register student",
+    "form":{
+        "name":"Full Name",
+        "regNo": "Registration number",
+        "gender":"Gender",
+        "department":"Ddepartment"
+    },
+    "register":"Register",
+    "snackbar":{
+        "text":"You must select atleast one course!",
+        "ok": "Ok"
+    }
+  },
+  "studentDetails":{
+    "title":"Details of {student}",
+    "about":"About Student",
+    "reg":"Reg number: ",
+    "name":"Name: ",
+    "department": "Department: ",
+    "course":"Courses Subscribed",
+    "teacher":"By Teacher {teacher}"
+  }
+  
+}

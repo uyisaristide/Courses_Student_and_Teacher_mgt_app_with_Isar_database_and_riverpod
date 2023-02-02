@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:isar_project/screens/auth_screens/validators/validator.dart';
@@ -33,27 +34,27 @@ class RegisterScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              'Register',
+                              'signUp.title',
                               style: TextStyle(
                                 fontSize: 32.0,
                                 fontWeight: FontWeight.w600,
                                 color: kDarkGreenColor,
                               ),
-                            ),
+                            ).tr(),
                             const SizedBox(height: 10.0),
                             Text(
-                              'Create a new account',
+                              'signUp.subtitle',
                               style: TextStyle(
                                 color: kGreyColor,
                                 fontSize: 16.0,
                               ),
-                            ),
+                            ).tr(),
                             const SizedBox(height: 40.0),
                             CustomTextField(
                               validator: (value) =>
                                   Validators.validateName(value!),
-                              hintText: 'Full Name',
-                              label: 'Full Name',
+                              hintText: 'signUp.form.name'.tr(),
+                              label: 'signUp.form.name'.tr(),
                               icon: Icons.person,
                               keyboardType: TextInputType.name,
                               onChanged: (value) {},
@@ -61,8 +62,8 @@ class RegisterScreen extends StatelessWidget {
                             CustomTextField(
                               validator: (value) =>
                                   Validators.validateEmail(value!),
-                              hintText: 'Email',
-                              label: "Email",
+                              hintText: 'signUp.form.email'.tr(),
+                              label: 'signUp.form.email'.tr(),
                               icon: Icons.mail,
                               keyboardType: TextInputType.name,
                               onChanged: (value) {},
@@ -70,8 +71,8 @@ class RegisterScreen extends StatelessWidget {
                             CustomTextField(
                               validator: (value) =>
                                   Validators.validatePassword(value!),
-                              hintText: 'Password',
-                              label: 'Password',
+                              hintText: 'signUp.form.password'.tr(),
+                              label: 'signUp.form.password'.tr(),
                               icon: Icons.lock,
                               keyboardType: TextInputType.name,
                               onChanged: (value) {},
@@ -79,8 +80,8 @@ class RegisterScreen extends StatelessWidget {
                             CustomTextField(
                               validator: (value) =>
                                   Validators.validatePassword(value!),
-                              hintText: 'Confirm Password',
-                              label: 'Confim Password',
+                              hintText: 'signUp.form.confirm'.tr(),
+                              label: 'signUp.form.confirm'.tr(),
                               icon: Icons.lock,
                               keyboardType: TextInputType.name,
                               onChanged: (value) {},
@@ -92,9 +93,9 @@ class RegisterScreen extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   const Text(
-                                    'Already have an account ?',
+                                    'signUp.question',
                                     style: TextStyle(fontSize: 14.0),
-                                  ),
+                                  ).tr(),
                                   TextButton(
                                     style: ButtonStyle(
                                       foregroundColor:
@@ -105,9 +106,9 @@ class RegisterScreen extends StatelessWidget {
                                       context.push('/login');
                                     },
                                     child: const Text(
-                                      'Login',
+                                      'signUp.login',
                                       style: TextStyle(fontSize: 14.0),
-                                    ),
+                                    ).tr(),
                                   )
                                 ],
                               ),
@@ -118,7 +119,7 @@ class RegisterScreen extends StatelessWidget {
                           padding:
                               const EdgeInsets.only(left: 20.0, right: 20.0),
                           child: AuthenticationButton(
-                            label: 'Sign Up',
+                            label: 'signUp.signUp'.tr(),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) ;
                             },
