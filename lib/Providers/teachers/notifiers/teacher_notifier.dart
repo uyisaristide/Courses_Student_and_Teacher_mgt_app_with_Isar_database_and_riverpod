@@ -8,7 +8,10 @@ class TeacherNotifier extends StateNotifier<List<Teacher>> {
 
   Future<void> saveTeacher(Teacher newTeacher) async {
     // final isar = await db;
-    isarDb.writeTxnSync<int>(() => isarDb.teachers.putSync(newTeacher));
+    // isarDb.writeTxnSync<int>(() => isarDb.teachers.putSync(newTeacher));
+    await isarDb.writeTxn(() async {
+      await isarDb.teachers.put(newTeacher);
+    });
     state = [...state, newTeacher];
   }
 
