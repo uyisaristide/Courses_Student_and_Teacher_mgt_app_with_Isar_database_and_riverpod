@@ -32,11 +32,11 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
   var selectedCourseProvider = StateProvider<List<Course>>((ref) => []);
 
   List genderItems = ['Male', 'Female'];
-   String genderItem ='Male';
+  String genderItem = 'Male';
 
   List departmentItems = ['CSC', 'IT', 'IS', 'Science'];
-   String departmentItem = 'IT';
-
+  String departmentItem = 'IT';
+                                                          
   @override
   void initState() {
     ref.read(createCourseProvider.notifier).getAllCourses();
@@ -204,19 +204,18 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                                       )),
                                 );
                               } else {
-                                
-                                  final newStudent = Student(
-                                      name: nameController.text,
-                                      regNumber: regNumberController.text,
-                                      department: departmentItem ,
-                                      gender: genderItem );
+                                final newStudent = Student(
+                                    name: nameController.text,
+                                    regNumber: regNumberController.text,
+                                    department: departmentItem,
+                                    gender: genderItem);
 
-                                  newStudent.courses.addAll(selectedCourses);
+                                newStudent.courses.addAll(selectedCourses);
 
-                                  ref
-                                      .read(studentProvider.notifier)
-                                      .saveStudent(newStudent);
-                              
+                                ref
+                                    .read(studentProvider.notifier)
+                                    .saveStudent(newStudent);
+
                                 context.pop();
                               }
                             }

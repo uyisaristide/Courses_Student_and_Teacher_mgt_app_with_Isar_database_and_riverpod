@@ -20,21 +20,23 @@ class CourseDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _CourseDetailsScreenState extends ConsumerState<CourseDetailsScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  // Teacher? teacher;
-
   @override
   void initState() {
-    ref.read(createCourseProvider.notifier).getAllCourses();
+    ref
+        .read(courseDetailsProvider.notifier)
+        .getCoursesDetails(int.parse(widget.id));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var course = ref.watch(createCourseProvider).where((element) => element.id == int.parse(widget.id)).first;
-    var studentsList = course.students.toList();
-    var teacher =course.teacher.value;
+    // var course = ref
+    //     .watch(createCourseProvider)
+    //     .where((element) => element.id == int.parse(widget.id))
+    //     .first;
+    var course = ref.watch(courseDetailsProvider).data;
+    var studentsList = course!.students.toList();
+    var teacher = course.teacher.value;
     return Material(
       child: Stack(
         children: [

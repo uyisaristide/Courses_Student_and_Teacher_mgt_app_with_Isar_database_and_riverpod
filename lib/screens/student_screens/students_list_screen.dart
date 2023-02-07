@@ -103,9 +103,6 @@ class _StudentsScreenState extends ConsumerState<StudentsScreen> {
                                     onTap: () {
                                       context.push(
                                           "/studentDetails?id=${foundStudents[index].id}");
-      
-                                      // context.push('/studentDetails',
-                                      //     extra: foundStudents[index]);
                                     },
                                     focusColor: kFoamColor,
                                     title: Padding(

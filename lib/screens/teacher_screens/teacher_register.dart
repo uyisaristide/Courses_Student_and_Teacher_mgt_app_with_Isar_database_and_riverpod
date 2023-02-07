@@ -148,7 +148,7 @@ class _TeacherRegisterScreenState extends ConsumerState<TeacherRegisterScreen> {
                         padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                         child: AuthenticationButton(
                           label: 'Register',
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               if (selectedCourse == null) {
                                 return ScaffoldMessenger.of(context)
@@ -167,9 +167,7 @@ class _TeacherRegisterScreenState extends ConsumerState<TeacherRegisterScreen> {
                                       action: SnackBarAction(
                                         textColor: Colors.white,
                                         label: 'Right?',
-                                        onPressed: () {
-                                          // Some code to undo the change.
-                                        },
+                                        onPressed: () {},
                                       )),
                                 );
                               } else {

@@ -19,19 +19,24 @@ class StudentDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _StudentDetailsScreenState extends ConsumerState<StudentDetailsScreen> {
-  
-
   @override
   void initState() {
-    ref.read(studentProvider.notifier).getAllStudents();
-
+    // ref.read(studentProvider.notifier).getAllStudents();
+    ref
+        .read(studentDetailProvider.notifier)
+        .getStudentDetails(int.parse(widget.id));
+        
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var student = ref.watch(studentProvider).where((element) => element.id == int.parse(widget.id)).first;
-    var coursesList = student.courses.toList();
+    // var student = ref
+    //     .watch(studentProvider)
+    //     .where((element) => element.id == int.parse(widget.id))
+    //     .first;
+    var student = ref.watch(studentDetailProvider).data;
+    var coursesList = student!.courses.toList();
     return Material(
       child: Stack(
         children: [

@@ -7,12 +7,7 @@ class CourseNotifier extends StateNotifier<List<Course>> {
   CourseNotifier() : super([]);
 
   Future<void> saveCourse(Course newCourse) async {
-    // final isar = await db;
-    // isarDb.writeTxnSync<int>(() => isarDb.courses.putSync(newCourse));
-
-    await isarDb.writeTxn(() async {
-      await isarDb.courses.put(newCourse);
-    });
+    isarDb.writeTxnSync<int>(() => isarDb.courses.putSync(newCourse));
 
     state = [...state, newCourse];
   }

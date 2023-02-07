@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:isar_project/Providers/teachers/providers.dart';
-import 'package:isar_project/models/teacher.dart';
 
 import '../../constants.dart';
 
@@ -18,17 +17,17 @@ class TeacherDetailsScreen extends ConsumerStatefulWidget {
 class _TeacherDetailsScreenState extends ConsumerState<TeacherDetailsScreen> {
   @override
   void initState() {
-    ref.read(teacherProvider.notifier).getAllTeachers();
+    ref
+        .read(teacherDetailProvider.notifier)
+        .getTeacherDetails(int.parse(widget.id));
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var teacher = ref
-        .watch(teacherProvider)
-        .where((element) => element.id == int.parse(widget.id))
-        .first;
-    var course = teacher.course.value;
+    var teacher = ref.watch(teacherDetailProvider).data;
+    var course = teacher!.course.value;
     return Material(
       child: Stack(
         children: [
