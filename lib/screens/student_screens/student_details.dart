@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:isar_project/Providers/courses/providers.dart';
+import 'package:isar_project/Providers/students/providers.dart';
 import 'package:isar_project/models/student.dart';
 import 'package:isar_project/models/teacher.dart';
 
 import '../../constants.dart';
 
 class StudentDetailsScreen extends ConsumerStatefulWidget {
-  Student student;
-  StudentDetailsScreen({super.key, required this.student});
+  String id;
+  StudentDetailsScreen({super.key, required this.id});
 
   @override
   ConsumerState<StudentDetailsScreen> createState() =>
@@ -18,19 +19,19 @@ class StudentDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _StudentDetailsScreenState extends ConsumerState<StudentDetailsScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  final TextEditingController nameController = TextEditingController();
+  
 
   @override
   void initState() {
-    ref.read(getCourseFor.notifier).getCourseFor(widget.student);
+    ref.read(studentProvider.notifier).getAllStudents();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var coursesList = ref.watch(getCourseFor);
+    var student = ref.watch(studentProvider).where((element) => element.id == int.parse(widget.id)).first;
+    var coursesList = student.courses.toList();
     return Material(
       child: Stack(
         children: [
@@ -45,7 +46,7 @@ class _StudentDetailsScreenState extends ConsumerState<StudentDetailsScreen> {
                   fontWeight: FontWeight.w600,
                   color: kDarkGreenColor,
                 ),
-              ).tr(namedArgs: {'student': widget.student.name}),
+              ).tr(namedArgs: {'student': student.name}),
             ),
             body: SafeArea(
               child: SingleChildScrollView(
@@ -74,10 +75,13 @@ class _StudentDetailsScreenState extends ConsumerState<StudentDetailsScreen> {
                             children: [
                               const Text(
                                 'studentDetails.reg',
-                                style: TextStyle(fontSize: 25),
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ).tr(),
                               Text(
-                                widget.student.regNumber,
+                                student.regNumber,
                                 style: const TextStyle(fontSize: 25),
                               ),
                             ],
@@ -90,10 +94,13 @@ class _StudentDetailsScreenState extends ConsumerState<StudentDetailsScreen> {
                             children: [
                               const Text(
                                 'studentDetails.name',
-                                style: TextStyle(fontSize: 25),
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ).tr(),
                               Text(
-                                widget.student.name,
+                                student.name,
                                 style: const TextStyle(fontSize: 25),
                               ),
                             ],
@@ -106,10 +113,13 @@ class _StudentDetailsScreenState extends ConsumerState<StudentDetailsScreen> {
                             children: [
                               const Text(
                                 'studentDetails.department',
-                                style: TextStyle(fontSize: 25),
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ).tr(),
                               Text(
-                                widget.student.department,
+                                student.department,
                                 style: const TextStyle(fontSize: 25),
                               ).tr(),
                             ],
@@ -174,25 +184,25 @@ class _StudentDetailsScreenState extends ConsumerState<StudentDetailsScreen> {
               ),
             ),
           ),
-          Positioned(
-            top: 30.0,
-            left: 20.0,
-            child: CircleAvatar(
-              backgroundColor: Colors.grey.shade300,
-              radius: 20.0,
-              child: IconButton(
-                onPressed: () {
-                  // Navigator.pop(context);
-                  context.pop();
-                },
-                icon: Icon(
-                  Icons.arrow_back_ios_new,
-                  color: kDarkGreenColor,
-                  size: 24.0,
-                ),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   top: 30.0,
+          //   left: 20.0,
+          //   child: CircleAvatar(
+          //     backgroundColor: Colors.grey.shade300,
+          //     radius: 20.0,
+          //     child: IconButton(
+          //       onPressed: () {
+          //         // Navigator.pop(context);
+          //         context.pop();
+          //       },
+          //       icon: Icon(
+          //         Icons.arrow_back_ios_new,
+          //         color: kDarkGreenColor,
+          //         size: 24.0,
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

@@ -91,9 +91,7 @@ class CourseRegisterScreen extends ConsumerWidget {
                                         credits: int.parse(
                                             courseCreditsController.text)));
 
-                                context.push('/courses');
-
-                                
+                                context.pop();
                               }
                             },
                           ),
@@ -101,25 +99,6 @@ class CourseRegisterScreen extends ConsumerWidget {
                       ],
                     ),
                   ),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 30.0,
-            left: 20.0,
-            child: CircleAvatar(
-              backgroundColor: Colors.grey.shade300,
-              radius: 20.0,
-              child: IconButton(
-                onPressed: () {
-                  // Navigator.pop(context);
-                  context.pop();
-                },
-                icon: Icon(
-                  Icons.arrow_back_ios_new,
-                  color: kDarkGreenColor,
-                  size: 24.0,
                 ),
               ),
             ),

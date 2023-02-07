@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:isar_project/Providers/students/providers.dart';
-import 'package:isar_project/contollers/isar_servise.dart';
 import 'package:isar_project/models/student.dart';
-import 'package:isar_project/screens/student_screens/student_details.dart';
 
 import '../../constants.dart';
-import '../../models/course.dart';
 
 class StudentsScreen extends ConsumerStatefulWidget {
   const StudentsScreen({super.key});
@@ -18,141 +15,154 @@ class StudentsScreen extends ConsumerStatefulWidget {
 }
 
 class _StudentsScreenState extends ConsumerState<StudentsScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  final TextEditingController nameController = TextEditingController();
+  var foundStudentsProvider = StateProvider<List<Student>>((ref) => []);
 
   @override
   void initState() {
-    // TODO: implement initState
     ref.read(studentProvider.notifier).getAllStudents();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var listStudents = ref.watch(studentProvider);
+    var foundStudents = ref.watch(studentProvider);
     return Material(
-      child: Stack(
-        children: [
-          Scaffold(
-            body: Form(
-              key: _formKey,
-              child: SafeArea(
-                child: SingleChildScrollView(
-                  child: Container(
-                    constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.9,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: Text(
+            'studentsScreen.title',
+            style: TextStyle(
+              fontSize: 32.0,
+              fontWeight: FontWeight.w600,
+              color: kDarkGreenColor,
+            ),
+          ).tr(),
+          actions: [
+            Text(
+              '${foundStudents.length}',
+              style: TextStyle(
+                fontSize: 32.0,
+                fontWeight: FontWeight.w600,
+                color: kDarkGreenColor,
+              ),
+            )
+          ],
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Container(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.9,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: TextField(
+                      onChanged: (keyWord) {
+                        if (keyWord.isEmpty) {
+                          ref.read(studentProvider.notifier).state =
+                              foundStudents;
+                        } else {
+                          foundStudents = foundStudents
+                              .where((student) => student.name
+                                  .toLowerCase()
+                                  .contains(keyWord.toLowerCase()))
+                              .toList();
+                          ref.read(studentProvider.notifier).state =
+                              foundStudents;
+                        }
+                      },
+                      decoration: const InputDecoration(
+                          labelText: 'Search', suffixIcon: Icon(Icons.search)),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'studentsScreen.title',
-                              style: TextStyle(
-                                fontSize: 32.0,
-                                fontWeight: FontWeight.w600,
-                                color: kDarkGreenColor,
-                              ),
-                            ).tr(),
-                            const SizedBox(
-                              height: 50,
-                            ),
-                            SizedBox(
-                              height: 400,
-                              child: ListView.builder(
-                                  physics: const BouncingScrollPhysics(),
-                                  itemCount: listStudents.length,
-                                  shrinkWrap: true,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return ListTile(
-                                      onTap: () {
-                                        context.push('/studentDetails',
-                                            extra: listStudents[index]);
-                                      },
-                                      focusColor: kFoamColor,
-                                      title: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 40),
-                                        child: Text(
-                                          listStudents[index].name,
-                                          style: const TextStyle(fontSize: 20),
-                                        ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      SizedBox(
+                        height: 400,
+                        child: foundStudents.isEmpty
+                            ? const Center(
+                                child: Text('there is no Student'),
+                              )
+                            : ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: foundStudents.length,
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return ListTile(
+                                    onTap: () {
+                                      context.push(
+                                          "/studentDetails?id=${foundStudents[index].id}");
+      
+                                      // context.push('/studentDetails',
+                                      //     extra: foundStudents[index]);
+                                    },
+                                    focusColor: kFoamColor,
+                                    title: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 40),
+                                      child: Text(
+                                        foundStudents[index].name,
+                                        style: const TextStyle(fontSize: 20),
                                       ),
-                                      leading: CircleAvatar(
-                                          backgroundColor: kDarkGreenColor,
-                                          child: Text('${index + 1}')),
-                                    );
-                                  }),
-                            ),
-                            const SizedBox(height: 15.0),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Flexible(
-                                    child: const Text(
-                                      'studentsScreen.addNew',
-                                      style: TextStyle(fontSize: 18.0),
-                                    ).tr(),
-                                  ),
-                                  Flexible(
-                                    child: TextButton(
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                kFoamColor),
-                                        foregroundColor:
-                                            MaterialStateProperty.all(
-                                                kDarkGreenColor),
-                                      ),
-                                      onPressed: () {
-                                        context.push('/addStudent');
-                                      },
-                                      child: const Text(
-                                        'studentsScreen.add',
-                                        style: TextStyle(fontSize: 20.0),
-                                      ).tr(),
                                     ),
-                                  )
-                                ],
+                                    leading: CircleAvatar(
+                                        backgroundColor: kDarkGreenColor,
+                                        child: Text('${index + 1}')),
+                                    trailing:
+                                        const Icon(Icons.arrow_forward_ios),
+                                  );
+                                }),
+                      ),
+                      const SizedBox(height: 15.0),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: const Text(
+                                'studentsScreen.addNew',
+                                style: TextStyle(fontSize: 18.0),
+                              ).tr(),
+                            ),
+                            Flexible(
+                              child: TextButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(kFoamColor),
+                                  foregroundColor: MaterialStateProperty.all(
+                                      kDarkGreenColor),
+                                ),
+                                onPressed: () {
+                                  context.push('/addStudent');
+                                },
+                                child: const Text(
+                                  'studentsScreen.add',
+                                  style: TextStyle(fontSize: 20.0),
+                                ).tr(),
                               ),
                             )
                           ],
                         ),
-                      ],
-                    ),
+                      )
+                    ],
                   ),
-                ),
+                ],
               ),
             ),
           ),
-          Positioned(
-            top: 30.0,
-            left: 20.0,
-            child: CircleAvatar(
-              backgroundColor: Colors.grey.shade300,
-              radius: 20.0,
-              child: IconButton(
-                onPressed: () {
-                  // Navigator.pop(context);
-                  context.pop();
-                },
-                icon: Icon(
-                  Icons.arrow_back_ios_new,
-                  color: kDarkGreenColor,
-                  size: 24.0,
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

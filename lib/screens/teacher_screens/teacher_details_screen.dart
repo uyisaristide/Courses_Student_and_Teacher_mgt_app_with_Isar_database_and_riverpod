@@ -1,27 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:isar_project/contollers/isar_servise.dart';
+import 'package:isar_project/Providers/teachers/providers.dart';
 import 'package:isar_project/models/teacher.dart';
 
 import '../../constants.dart';
-import '../../models/course.dart';
 
-class TeacherDetailsScreen extends StatefulWidget {
-  Teacher teacher;
-  TeacherDetailsScreen({super.key, required this.teacher});
+class TeacherDetailsScreen extends ConsumerStatefulWidget {
+  String id;
+  TeacherDetailsScreen({super.key, required this.id});
 
   @override
-  State<TeacherDetailsScreen> createState() => _TeacherDetailsScreenState();
+  ConsumerState<TeacherDetailsScreen> createState() =>
+      _TeacherDetailsScreenState();
 }
 
-class _TeacherDetailsScreenState extends State<TeacherDetailsScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  final TextEditingController nameController = TextEditingController();
+class _TeacherDetailsScreenState extends ConsumerState<TeacherDetailsScreen> {
+  @override
+  void initState() {
+    ref.read(teacherProvider.notifier).getAllTeachers();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var course = widget.teacher.course.value;
+    var teacher = ref
+        .watch(teacherProvider)
+        .where((element) => element.id == int.parse(widget.id))
+        .first;
+    var course = teacher.course.value;
     return Material(
       child: Stack(
         children: [
@@ -30,7 +37,7 @@ class _TeacherDetailsScreenState extends State<TeacherDetailsScreen> {
               elevation: 0,
               backgroundColor: Colors.grey.shade300,
               title: Text(
-                ' Details of ${widget.teacher.name} ',
+                ' Details of ${teacher.name} ',
                 style: TextStyle(
                   // fontSize: 32.0,
                   fontWeight: FontWeight.w600,
@@ -65,10 +72,13 @@ class _TeacherDetailsScreenState extends State<TeacherDetailsScreen> {
                             children: [
                               const Text(
                                 'Teacher Id: ',
-                                style: TextStyle(fontSize: 25),
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                               Text(
-                                '${widget.teacher.id}',
+                                '${teacher.id}',
                                 style: const TextStyle(fontSize: 25),
                               ),
                             ],
@@ -81,10 +91,13 @@ class _TeacherDetailsScreenState extends State<TeacherDetailsScreen> {
                             children: [
                               const Text(
                                 'Name: ',
-                                style: TextStyle(fontSize: 25),
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                               Text(
-                                widget.teacher.name,
+                                teacher.name,
                                 style: const TextStyle(fontSize: 25),
                               ),
                             ],

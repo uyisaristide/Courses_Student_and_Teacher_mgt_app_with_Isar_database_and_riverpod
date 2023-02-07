@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:isar_project/Providers/courses/providers.dart';
 import 'package:isar_project/Providers/students/providers.dart';
 import 'package:isar_project/contollers/isar_servise.dart';
 import 'package:isar_project/models/student.dart';
@@ -10,8 +11,8 @@ import '../../constants.dart';
 import '../../models/course.dart';
 
 class CourseDetailsScreen extends ConsumerStatefulWidget {
-  Course course;
-  CourseDetailsScreen({super.key, required this.course});
+  String id;
+  CourseDetailsScreen({super.key, required this.id});
 
   @override
   ConsumerState<CourseDetailsScreen> createState() =>
@@ -25,14 +26,15 @@ class _CourseDetailsScreenState extends ConsumerState<CourseDetailsScreen> {
 
   @override
   void initState() {
-    ref.read(studentProvider.notifier).getStudentFor(widget.course);
+    ref.read(createCourseProvider.notifier).getAllCourses();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var studentsList = ref.watch(studentProvider);
-    var teacher = widget.course.teacher.value;
+    var course = ref.watch(createCourseProvider).where((element) => element.id == int.parse(widget.id)).first;
+    var studentsList = course.students.toList();
+    var teacher =course.teacher.value;
     return Material(
       child: Stack(
         children: [
@@ -41,7 +43,7 @@ class _CourseDetailsScreenState extends ConsumerState<CourseDetailsScreen> {
               elevation: 0,
               backgroundColor: Colors.grey.shade300,
               title: Text(
-                ' Details of ${widget.course.couseName} course ',
+                ' Details of ${course.couseName} course ',
                 style: TextStyle(
                   // fontSize: 32.0,
                   fontWeight: FontWeight.w600,
@@ -81,10 +83,13 @@ class _CourseDetailsScreenState extends ConsumerState<CourseDetailsScreen> {
                           children: [
                             const Text(
                               'Course Name: ',
-                              style: TextStyle(fontSize: 25),
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                             Text(
-                              widget.course.couseName,
+                              course.couseName,
                               style: const TextStyle(fontSize: 25),
                             ),
                           ],
@@ -97,10 +102,13 @@ class _CourseDetailsScreenState extends ConsumerState<CourseDetailsScreen> {
                           children: [
                             const Text(
                               'Number of credits: ',
-                              style: TextStyle(fontSize: 25),
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                             Text(
-                              '${widget.course.credits}',
+                              '${course.credits}',
                               style: const TextStyle(fontSize: 25),
                             ),
                           ],
@@ -188,24 +196,6 @@ class _CourseDetailsScreenState extends ConsumerState<CourseDetailsScreen> {
                       ],
                     ),
                   ],
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 30.0,
-            left: 20.0,
-            child: CircleAvatar(
-              backgroundColor: Colors.grey.shade300,
-              radius: 20.0,
-              child: IconButton(
-                onPressed: () {
-                  context.pop();
-                },
-                icon: Icon(
-                  Icons.arrow_back_ios_new,
-                  color: kDarkGreenColor,
-                  size: 24.0,
                 ),
               ),
             ),

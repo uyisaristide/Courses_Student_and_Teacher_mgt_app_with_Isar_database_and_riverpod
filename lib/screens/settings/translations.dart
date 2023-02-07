@@ -38,7 +38,24 @@ class LanguageChange extends StatelessWidget {
             mediaIcon: Icons.flag_sharp,
             media: "Kinyarwanda",
             onPressed: () {
-              context.push('/register');
+              return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  backgroundColor: Colors.red,
+                  content: SizedBox(
+                    height: 80,
+                    child: Center(
+                      child: const Text(
+                        "Locale not supported yet",
+                        style: TextStyle(fontSize: 24),
+                      ).tr(),
+                    ),
+                  ),
+                  action: SnackBarAction(
+                    textColor: Colors.white,
+                    label: 'Ok',
+                    onPressed: () {
+                      // Some code to undo the change.
+                    },
+                  )));
             },
           ),
         ],

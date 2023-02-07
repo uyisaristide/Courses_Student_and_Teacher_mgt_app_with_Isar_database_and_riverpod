@@ -6,6 +6,7 @@ import 'package:isar_project/Providers/courses/providers.dart';
 import 'package:isar_project/Providers/students/providers.dart';
 import 'package:isar_project/models/course.dart';
 import 'package:isar_project/models/student.dart';
+import 'package:isar_project/screens/common/dropdown.dart';
 
 import '../../constants.dart';
 import '../auth_screens/validators/validator.dart';
@@ -30,10 +31,16 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
 
   var selectedCourseProvider = StateProvider<List<Course>>((ref) => []);
 
+  List genderItems = ['Male', 'Female'];
+   String genderItem ='Male';
+
+  List departmentItems = ['CSC', 'IT', 'IS', 'Science'];
+   String departmentItem = 'IT';
+
   @override
   void initState() {
-    // TODO: implement initState
     ref.read(createCourseProvider.notifier).getAllCourses();
+
     super.initState();
   }
 
@@ -93,64 +100,78 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                             keyboardType: TextInputType.name,
                             onChanged: (value) {},
                           ),
-                          CustomTextField(
-                            controller: genderCotroller,
-                            validator: (value) =>
-                                Validators.validateNumber(value!),
-                            hintText: 'createStudent.form.gender'.tr(),
-                            label: 'createStudent.form.gender'.tr(),
-                            icon: Icons.person,
-                            keyboardType: TextInputType.name,
-                            onChanged: (value) {},
-                          ),
-                          CustomTextField(
-                            controller: departmentController,
-                            validator: (value) =>
-                                Validators.validateNumber(value!),
-                            hintText: 'createStudent.form.department'.tr(),
-                            label: 'createStudent.form.department'.tr(),
-                            icon: Icons.person,
-                            keyboardType: TextInputType.name,
-                            onChanged: (value) {},
-                          ),
+                          CustomDropdown(
+                              itemValue: genderItem,
+                              itemsList: genderItems,
+                              hint: 'Gender'),
+                          CustomDropdown(
+                              itemValue: departmentItem,
+                              itemsList: departmentItems,
+                              hint: 'Department'),
+                          // CustomTextField(
+                          //   controller: departmentController,
+                          //   validator: (value) =>
+                          //       Validators.validateNumber(value!),
+                          //   hintText: 'createStudent.form.department'.tr(),
+                          //   label: 'createStudent.form.department'.tr(),
+                          //   icon: Icons.person,
+                          //   keyboardType: TextInputType.name,
+                          //   onChanged: (value) {},
+                          // ),
                           SizedBox(
                             height: 200,
-                            child: ListView.builder(
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: listCourse.length,
-                                shrinkWrap: false,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return CheckboxListTile(
-                                    title: Text(listCourse[index].couseName),
-                                    value: listCourse[index].isSelected,
-                                    selected: listCourse[index].isSelected,
-                                    onChanged: (value) {
-                                      listCourse[index].isSelected = value!;
-                                      if (selectedCourses
-                                          .contains(listCourse[index])) {
-                                        var rem = selectedCourses
-                                            .where((element) =>
-                                                element != listCourse[index])
-                                            .toList();
-                                        ref
-                                            .read(
-                                                selectedCourseProvider.notifier)
-                                            .state = rem;
-                                      } else {
-                                        ref
-                                            .read(
-                                                selectedCourseProvider.notifier)
-                                            .state = [
-                                          ...ref.watch(selectedCourseProvider),
-                                          listCourse[index]
-                                        ];
-                                      }
-                                    },
-                                    activeColor: kDarkGreenColor,
-                                    checkColor: Colors.white,
-                                    secondary: const Icon(Icons.book),
-                                  );
-                                }),
+                            child: listCourse.isEmpty
+                                ? Row(
+                                    children: [
+                                      const Text(
+                                          "There must be a course before adding a student"),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            context.go('/addCourse');
+                                          },
+                                          child: const Text('Add Course'))
+                                    ],
+                                  )
+                                : ListView.builder(
+                                    physics: const BouncingScrollPhysics(),
+                                    itemCount: listCourse.length,
+                                    shrinkWrap: false,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return CheckboxListTile(
+                                        title:
+                                            Text(listCourse[index].couseName),
+                                        value: listCourse[index].isSelected,
+                                        selected: listCourse[index].isSelected,
+                                        onChanged: (value) {
+                                          listCourse[index].isSelected = value!;
+                                          if (selectedCourses
+                                              .contains(listCourse[index])) {
+                                            var rem = selectedCourses
+                                                .where((element) =>
+                                                    element !=
+                                                    listCourse[index])
+                                                .toList();
+                                            ref
+                                                .read(selectedCourseProvider
+                                                    .notifier)
+                                                .state = rem;
+                                          } else {
+                                            ref
+                                                .read(selectedCourseProvider
+                                                    .notifier)
+                                                .state = [
+                                              ...ref.watch(
+                                                  selectedCourseProvider),
+                                              listCourse[index]
+                                            ];
+                                          }
+                                        },
+                                        activeColor: kDarkGreenColor,
+                                        checkColor: Colors.white,
+                                        secondary: const Icon(Icons.book),
+                                      );
+                                    }),
                           )
                         ],
                       ),
@@ -183,19 +204,20 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                                       )),
                                 );
                               } else {
-                                final newStudent = Student(
-                                    name: nameController.text,
-                                    regNumber: regNumberController.text,
-                                    department: departmentController.text,
-                                    gender: genderCotroller.text);
+                                
+                                  final newStudent = Student(
+                                      name: nameController.text,
+                                      regNumber: regNumberController.text,
+                                      department: departmentItem ,
+                                      gender: genderItem );
 
-                                newStudent.courses.addAll(selectedCourses);
+                                  newStudent.courses.addAll(selectedCourses);
 
-                                ref
-                                    .read(studentProvider.notifier)
-                                    .saveStudent(newStudent);
-
-                                context.push('/students');
+                                  ref
+                                      .read(studentProvider.notifier)
+                                      .saveStudent(newStudent);
+                              
+                                context.pop();
                               }
                             }
                           },
@@ -203,24 +225,6 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                       )
                     ],
                   ),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 30.0,
-            left: 20.0,
-            child: CircleAvatar(
-              backgroundColor: Colors.grey.shade300,
-              radius: 20.0,
-              child: IconButton(
-                onPressed: () {
-                  context.pop();
-                },
-                icon: Icon(
-                  Icons.arrow_back_ios_new,
-                  color: kDarkGreenColor,
-                  size: 24.0,
                 ),
               ),
             ),

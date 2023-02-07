@@ -9,11 +9,10 @@ class StudentNotifier extends StateNotifier<List<Student>> {
   StudentNotifier() : super([]);
 
   Future<void> saveStudent(Student newStudent) async {
-    // final isar = await db;
-    // isarDb.writeTxnSync<int>(() => isarDb.students.putSync(newStudent));
-    await isarDb.writeTxn(() async {
-      await isarDb.students.put(newStudent);
-    });
+    // await isarDb.writeTxn(() async {
+    //   await isarDb.students.put(newStudent);
+    // });
+    isarDb.writeTxnSync<int>(() => isarDb.students.putSync(newStudent));
     state = [...state, newStudent];
   }
 
@@ -23,7 +22,6 @@ class StudentNotifier extends StateNotifier<List<Student>> {
   }
 
   Future<List<Student>> getStudentFor(Course course) async {
-    // final isar = await db;
     state = await isarDb.students
         .filter()
         .courses((q) => q.idEqualTo(course.id))

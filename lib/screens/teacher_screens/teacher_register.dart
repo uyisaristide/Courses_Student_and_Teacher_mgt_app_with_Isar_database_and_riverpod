@@ -10,6 +10,7 @@ import '../../constants.dart';
 import '../auth_screens/validators/validator.dart';
 import '../auth_screens/widgets/authentication_button.dart';
 import '../auth_screens/widgets/custom_text_field.dart';
+import '../common/dropdown.dart';
 
 class TeacherRegisterScreen extends ConsumerStatefulWidget {
   const TeacherRegisterScreen({super.key});
@@ -30,10 +31,15 @@ class _TeacherRegisterScreenState extends ConsumerState<TeacherRegisterScreen> {
   final teacherState = StateProvider<Course?>((ref) => null);
   @override
   void initState() {
-    // TODO: implement initState
     ref.read(createCourseProvider.notifier).getAllCourses();
     super.initState();
   }
+
+  List genderItems = ['Male', 'Female'];
+  String genderItem = 'Male';
+
+  List departmentItems = ['CSC', 'IT', 'IS', 'Science'];
+  String departmentItem = 'IT';
 
   @override
   Widget build(BuildContext context) {
@@ -91,45 +97,50 @@ class _TeacherRegisterScreenState extends ConsumerState<TeacherRegisterScreen> {
                             keyboardType: TextInputType.name,
                             onChanged: (value) {},
                           ),
-                          CustomTextField(
-                            controller: genderCotroller,
-                            validator: (value) =>
-                                Validators.validateNumber(value!),
-                            hintText: 'Gender',
-                            label: 'Gender',
-                            icon: Icons.person,
-                            keyboardType: TextInputType.name,
-                            onChanged: (value) {},
-                          ),
-                          CustomTextField(
-                            controller: departmentController,
-                            validator: (value) =>
-                                Validators.validateNumber(value!),
-                            hintText: 'Department',
-                            label: 'Department',
-                            icon: Icons.person,
-                            keyboardType: TextInputType.name,
-                            onChanged: (value) {},
-                          ),
+                          CustomDropdown(
+                              itemValue: genderItem,
+                              itemsList: genderItems,
+                              hint: 'Gender'),
+                          CustomDropdown(
+                              itemValue: departmentItem,
+                              itemsList: departmentItems,
+                              hint: 'Department'),
                           SizedBox(
                             height: 200,
-                            child: ListView.builder(
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: listCourse.length,
-                                shrinkWrap: true,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return RadioListTile(
-                                    activeColor: kDarkGreenColor,
-                                    value: listCourse[index],
-                                    groupValue: selectedCourse,
-                                    onChanged: (currentCourse) {
-                                      ref.read(teacherState.notifier).state =
-                                          listCourse[index];
-                                    },
-                                    title: Text(listCourse[index].couseName),
-                                    selected: false,
-                                  );
-                                }),
+                            child: listCourse.isEmpty
+                                ? Row(
+                                    children: [
+                                      const Flexible(
+                                        child: Text(
+                                            "There must be a course before adding a Teacher"),
+                                      ),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            context.go('/addCourse');
+                                          },
+                                          child: const Text('Add Course'))
+                                    ],
+                                  )
+                                : ListView.builder(
+                                    physics: const BouncingScrollPhysics(),
+                                    itemCount: listCourse.length,
+                                    shrinkWrap: true,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return RadioListTile(
+                                        activeColor: kDarkGreenColor,
+                                        value: listCourse[index],
+                                        groupValue: selectedCourse,
+                                        onChanged: (currentCourse) {
+                                          ref
+                                              .read(teacherState.notifier)
+                                              .state = listCourse[index];
+                                        },
+                                        title:
+                                            Text(listCourse[index].couseName),
+                                        selected: false,
+                                      );
+                                    }),
                           )
                         ],
                       ),
@@ -166,15 +177,30 @@ class _TeacherRegisterScreenState extends ConsumerState<TeacherRegisterScreen> {
                                     name: nameController.text,
                                     refferenceNumber:
                                         refferenceNumberController.text,
-                                    department: departmentController.text,
-                                    gender: genderCotroller.text);
+                                    department: departmentItem,
+                                    gender: genderItem);
                                 newTeacher.course.value = selectedCourse;
 
                                 ref
                                     .read(teacherProvider.notifier)
                                     .saveTeacher(newTeacher);
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  backgroundColor: Colors.white,
+                                  content: SizedBox(
+                                    height: 80,
+                                    child: Center(
+                                      child: Text(
+                                        'Saved successfully',
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            color: kDarkGreenColor),
+                                      ),
+                                    ),
+                                  ),
+                                ));
 
-                                context.push('/teachers');
+                                context.pop();
                               }
                             }
                           },

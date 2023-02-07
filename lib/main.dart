@@ -68,10 +68,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/studentDetails',
       builder: (context, state) {
-        Student student = state.extra as Student;
-
+        // Student student = state.extra as Student;
+        var id = state.queryParams['id'];
         return StudentDetailsScreen(
-          student: student,
+          id: "$id",
         );
       },
     ),
@@ -80,7 +80,7 @@ final _router = GoRouter(
       builder: (context, state) => const StudentsScreen(),
     ),
 
-     GoRoute(
+    GoRoute(
       path: '/languages',
       builder: (context, state) => const LanguageChange(),
     ),
@@ -92,28 +92,18 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/courses',
-      builder: (context, state) => CoursesScreen(),
+      builder: (context, state) => const CoursesScreen(),
     ),
     GoRoute(
       path: '/courseDetails',
       builder: (context, state) {
-        Course course = state.extra as Course;
-
+        // Student student = state.extra as Student;
+        var id = state.queryParams['id'];
         return CourseDetailsScreen(
-          course: course,
+          id: "$id",
         );
       },
     ),
-    // GoRoute(
-
-    //   path: "/teacherDetails",
-    //   builder: (context, state) {
-    //     int id = int.parse("${state.queryParams["id"]}");
-    //     return TeacherDetailsScreen(teacher: id);
-    //   },
-    // ),
-
-    //Teacher routes
 
     GoRoute(
       path: '/addTeacher',
@@ -123,14 +113,13 @@ final _router = GoRouter(
       path: '/teachers',
       builder: (context, state) => const TeachersScreen(),
     ),
-
     GoRoute(
       path: '/teacherDetails',
       builder: (context, state) {
-        Teacher teacher = state.extra as Teacher;
-
+        // Student student = state.extra as Student;
+        var id = state.queryParams['id'];
         return TeacherDetailsScreen(
-          teacher: teacher,
+          id: "$id",
         );
       },
     ),

@@ -65,7 +65,7 @@ class RegisterScreen extends StatelessWidget {
                               hintText: 'signUp.form.email'.tr(),
                               label: 'signUp.form.email'.tr(),
                               icon: Icons.mail,
-                              keyboardType: TextInputType.name,
+                              keyboardType: TextInputType.emailAddress,
                               onChanged: (value) {},
                             ),
                             CustomTextField(
@@ -128,24 +128,6 @@ class RegisterScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 30.0,
-            left: 20.0,
-            child: CircleAvatar(
-              backgroundColor: Colors.grey.shade300,
-              radius: 20.0,
-              child: IconButton(
-                onPressed: () {
-                  context.pop();
-                },
-                icon: Icon(
-                  Icons.arrow_back_ios_new,
-                  color: kDarkGreenColor,
-                  size: 24.0,
                 ),
               ),
             ),

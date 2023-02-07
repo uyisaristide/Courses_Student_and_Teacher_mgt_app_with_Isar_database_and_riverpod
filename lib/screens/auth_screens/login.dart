@@ -28,176 +28,166 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_rounded),
-            onPressed: () {
-              context.pop();
-            },
-          ),
-          foregroundColor: Colors.black45,
-        ),
         body: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Container(
-                  constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height * 0.67,
-                    maxWidth: MediaQuery.of(context).size.width,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            Container(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.67,
+                maxWidth: MediaQuery.of(context).size.width,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // First Column
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 70,
-                            child: Text(
-                              'signIn.title',
-                              style: TextStyle(
-                                fontSize: 32.0,
-                                fontWeight: FontWeight.w600,
-                                color: kDarkGreenColor,
-                              ),
-                            ).tr(),
-                          ),
-                          Text(
-                            'signIn.subtitle',
-                            style: TextStyle(
-                              color: kGreyColor,
-                              fontSize: 15.0,
-                            ),
-                          ).tr()
-                        ],
+                      const SizedBox(
+                        height: 70,
                       ),
+                      SizedBox(
+                        height: 70,
+                        child: Text(
+                          'signIn.title',
+                          style: TextStyle(
+                            fontSize: 32.0,
+                            fontWeight: FontWeight.w600,
+                            color: kDarkGreenColor,
+                          ),
+                        ).tr(),
+                      ),
+                      Text(
+                        'signIn.subtitle',
+                        style: TextStyle(
+                          color: kGreyColor,
+                          fontSize: 15.0,
+                        ),
+                      ).tr()
+                    ],
+                  ),
 
-                      // Second Column
-                      Column(
-                        children: [
-                          CustomTextField(
-                            validator: (value) =>
-                                Validators.validateName(value!),
-                            hintText: 'signIn.form.name'.tr(),
-                            label: 'signIn.form.name'.tr(),
-                            icon: Icons.person,
-                            keyboardType: TextInputType.name,
-                            onChanged: (value) {
-                              username = value != '' ? value : '';
-                            },
-                          ),
-                          CustomTextField(
-                            validator: (value) =>
-                                Validators.validatePassword(value!),
-                            hintText: 'signIn.form.password'.tr(),
-                            label: 'signIn.form.password'.tr(),
-                            icon: Icons.lock,
-                            obscureText: true,
-                            keyboardType: TextInputType.visiblePassword,
-                            onChanged: (value) {
-                              password = value != '' ? value : '';
-                            },
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Checkbox(
-                                      checkColor: Colors.white,
-                                      fillColor: MaterialStateProperty.all(
-                                          kDarkGreenColor),
-                                      value: rememberMe,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          rememberMe = value!;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'signIn.remember',
-                                      style: TextStyle(
-                                        color: kGreyColor,
-                                        fontSize: 14.0,
-                                      ),
-                                    ).tr()
-                                  ],
-                                ),
-                                TextButton(
-                                  onPressed: () {},
-                                  style: ButtonStyle(
-                                    foregroundColor: MaterialStateProperty.all(
-                                        kDarkGreenColor),
-                                  ),
-                                  child: const Text(
-                                    'signIn.forgot',
-                                  ).tr(),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
+                  
+                  Column(
+                    children: [
+                      CustomTextField(
+                        validator: (value) => Validators.validateName(value!),
+                        hintText: 'signIn.form.name'.tr(),
+                        label: 'signIn.form.name'.tr(),
+                        icon: Icons.person,
+                        keyboardType: TextInputType.name,
+                        onChanged: (value) {
+                          username = value != '' ? value : '';
+                        },
+                      ),
+                      CustomTextField(
+                        validator: (value) =>
+                            Validators.validatePassword(value!),
+                        hintText: 'signIn.form.password'.tr(),
+                        label: 'signIn.form.password'.tr(),
+                        icon: Icons.lock,
+                        obscureText: true,
+                        keyboardType: TextInputType.visiblePassword,
+                        onChanged: (value) {
+                          password = value != '' ? value : '';
+                        },
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              'signIn.question',
-                              style: TextStyle(fontSize: 14.0),
-                            ).tr(),
+                            Row(
+                              children: [
+                                Checkbox(
+                                  checkColor: Colors.white,
+                                  fillColor: MaterialStateProperty.all(
+                                      kDarkGreenColor),
+                                  value: rememberMe,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      rememberMe = value!;
+                                    });
+                                  },
+                                ),
+                                Text(
+                                  'signIn.remember',
+                                  style: TextStyle(
+                                    color: kGreyColor,
+                                    fontSize: 14.0,
+                                  ),
+                                ).tr()
+                              ],
+                            ),
                             TextButton(
+                              onPressed: () {},
                               style: ButtonStyle(
                                 foregroundColor:
                                     MaterialStateProperty.all(kDarkGreenColor),
                               ),
-                              onPressed: () {
-                                context.push('/register');
-                              },
                               child: const Text(
-                                'signIn.signUp',
-                                style: TextStyle(fontSize: 14.0),
+                                'signIn.forgot',
                               ).tr(),
                             )
                           ],
                         ),
                       ),
-                      // Third Column
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 20.0,
-                          right: 20.0,
-                          bottom: 20.0,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            AuthenticationButton(
-                              label: 'signIn.login'.tr(),
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  context.push('/home');
-                                }
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'signIn.question',
+                          style: TextStyle(fontSize: 14.0),
+                        ).tr(),
+                        TextButton(
+                          style: ButtonStyle(
+                            foregroundColor:
+                                MaterialStateProperty.all(kDarkGreenColor),
+                          ),
+                          onPressed: () {
+                            context.push('/register');
+                          },
+                          child: const Text(
+                            'signIn.signUp',
+                            style: TextStyle(fontSize: 14.0),
+                          ).tr(),
+                        )
+                      ],
+                    ),
+                  ),
+                  
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 20.0,
+                      right: 20.0,
+                      bottom: 20.0,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        AuthenticationButton(
+                          label: 'signIn.login'.tr(),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              context.go('/home');
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ));
+          ],
+        ),
+      ),
+    ));
   }
 }
