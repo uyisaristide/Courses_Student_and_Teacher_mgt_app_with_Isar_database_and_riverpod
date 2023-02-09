@@ -4,6 +4,7 @@ import '../../../constants.dart';
 
 class CustomTextField extends StatelessWidget {
   CustomTextField({
+    this.initialValue,
     this.controller,
     required this.label,
     this.validator,
@@ -18,6 +19,7 @@ class CustomTextField extends StatelessWidget {
 
   final String label;
   final String hintText;
+  final String? initialValue;
   final IconData icon;
   final bool obscureText;
   final TextInputType keyboardType;
@@ -53,6 +55,7 @@ class CustomTextField extends StatelessWidget {
             style: TextStyle(color: kDarkGreenColor, fontSize: 18),
           ),
           hintText: hintText,
+          
           hintStyle: TextStyle(
             color: kDarkGreenColor,
             fontWeight: FontWeight.w600,
@@ -67,6 +70,7 @@ class CustomTextField extends StatelessWidget {
             borderSide: BorderSide(color: kDarkGreenColor),
           ),
         ),
+        initialValue:initialValue ,
         onChanged: onChanged,
       ),
     );

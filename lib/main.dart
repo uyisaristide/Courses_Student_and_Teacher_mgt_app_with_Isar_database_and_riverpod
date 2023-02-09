@@ -63,7 +63,17 @@ final _router = GoRouter(
 
     GoRoute(
       path: '/addStudent',
-      builder: (context, state) => const StudentRegisterScreen(),
+      builder: (context, state) => StudentRegisterScreen(),
+    ),
+    GoRoute(
+      path: '/updateStudent',
+      builder: (context, state) {
+        // Student student = state.extra as Student;
+        var id = state.queryParams['id'];
+        return StudentRegisterScreen(
+          id: "$id",
+        );
+      },
     ),
     GoRoute(
       path: '/studentDetails',

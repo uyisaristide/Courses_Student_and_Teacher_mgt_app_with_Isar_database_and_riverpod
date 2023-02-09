@@ -29,4 +29,26 @@ class StudentNotifier extends StateNotifier<List<Student>> {
 
     return state;
   }
+
+  deleteStudent(int id) async {
+    await isarDb.writeTxn(() async {
+      await isarDb.students.delete(id);
+    });
+  }
+
+   updateStudent(int id, Student studentUpdate) async {
+    await isarDb.writeTxn(() async {
+      var student = await isarDb.students.get(id);
+      // student = studentUpdate;
+      student!.name = studentUpdate.name;
+      student.courses = studentUpdate.courses;
+      student.department = studentUpdate.department;
+      student.gender = studentUpdate.gender;
+      student.regNumber = studentUpdate.regNumber;
+
+      await isarDb.students.put(student);
+    });
+    return state;
+  }
+  
 }

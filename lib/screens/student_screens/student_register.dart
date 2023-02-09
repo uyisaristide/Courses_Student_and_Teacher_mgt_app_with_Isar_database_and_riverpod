@@ -14,7 +14,8 @@ import '../auth_screens/widgets/authentication_button.dart';
 import '../auth_screens/widgets/custom_text_field.dart';
 
 class StudentRegisterScreen extends ConsumerStatefulWidget {
-  const StudentRegisterScreen({super.key});
+  String? id;
+  StudentRegisterScreen({super.key, this.id});
 
   @override
   ConsumerState<StudentRegisterScreen> createState() =>
@@ -36,16 +37,34 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
 
   List departmentItems = ['CSC', 'IT', 'IS', 'Science'];
   String departmentItem = 'IT';
-                                                          
+
+  preFillData(Student? student) {
+    if (widget.id != null) {
+      nameController.text = student!.name;
+      regNumberController.text = student.regNumber;
+      genderItem = student.gender;
+      departmentItem = student.department;
+
+    }
+  }
+
   @override
   void initState() {
     ref.read(createCourseProvider.notifier).getAllCourses();
 
+    if (widget.id != null) {
+      ref
+          .read(studentDetailProvider.notifier)
+          .getStudentDetails(int.parse('${widget.id}'));
+    }
+    preFillData(ref.read(studentDetailProvider).data);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    
+    var student = ref.watch(studentDetailProvider).data;
     var listCourse = ref.watch(createCourseProvider);
     var selectedCourses = ref.watch(selectedCourseProvider);
     return Material(
@@ -101,23 +120,24 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                             onChanged: (value) {},
                           ),
                           CustomDropdown(
-                              itemValue: genderItem,
-                              itemsList: genderItems,
-                              hint: 'Gender'),
+                            itemValue: genderItem,
+                            itemsList: genderItems,
+                            hint: 'Gender',
+                            onChanged: (newValue) {
+                              setState(() {
+                                genderItem = newValue as String;
+                              });
+                            },
+                          ),
                           CustomDropdown(
                               itemValue: departmentItem,
                               itemsList: departmentItems,
-                              hint: 'Department'),
-                          // CustomTextField(
-                          //   controller: departmentController,
-                          //   validator: (value) =>
-                          //       Validators.validateNumber(value!),
-                          //   hintText: 'createStudent.form.department'.tr(),
-                          //   label: 'createStudent.form.department'.tr(),
-                          //   icon: Icons.person,
-                          //   keyboardType: TextInputType.name,
-                          //   onChanged: (value) {},
-                          // ),
+                              hint: 'Department',onChanged: (newValue) {
+                              setState(() {
+                                departmentItem = newValue as String;
+                              });
+                            },
+                          ),
                           SizedBox(
                             height: 200,
                             child: listCourse.isEmpty
@@ -178,7 +198,9 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                         child: AuthenticationButton(
-                          label: 'createStudent.register'.tr(),
+                          label: widget.id == null
+                              ? 'createStudent.register'.tr()
+                              : 'Update',
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               if (selectedCourses.isEmpty) {
@@ -198,9 +220,7 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                                       action: SnackBarAction(
                                         textColor: Colors.white,
                                         label: 'createStudent.snackbar.ok'.tr(),
-                                        onPressed: () {
-                                          // Some code to undo the change.
-                                        },
+                                        onPressed: () {},
                                       )),
                                 );
                               } else {
@@ -212,9 +232,16 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
 
                                 newStudent.courses.addAll(selectedCourses);
 
-                                ref
-                                    .read(studentProvider.notifier)
-                                    .saveStudent(newStudent);
+                                if (widget.id == null) {
+                                  ref
+                                      .read(studentProvider.notifier)
+                                      .saveStudent(newStudent);
+                                } else {
+                                  ref
+                                      .read(studentProvider.notifier)
+                                      .updateStudent(int.parse('${widget.id}'),
+                                          newStudent);
+                                }
 
                                 context.pop();
                               }

@@ -6,8 +6,13 @@ class CustomDropdown extends StatefulWidget {
   List itemsList;
   String itemValue;
   String hint;
+  Function(Object?)?  onChanged;
   CustomDropdown(
-      {super.key,required this.itemValue, required this.itemsList, required this.hint});
+      {super.key,
+      required this.onChanged,
+      required this.itemValue,
+      required this.itemsList,
+      required this.hint});
 
   @override
   State<CustomDropdown> createState() => _CustomDropdownState();
@@ -29,12 +34,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
             style: (TextStyle(color: kDarkGreenColor, fontSize: 18)),
           ),
           value: widget.itemValue,
-          
-          onChanged: (newValue) {
-            setState(() {
-              widget.itemValue = newValue as String;
-            });
-          },
+          onChanged: widget.onChanged,
           items: widget.itemsList.map((valueItem) {
             return DropdownMenuItem(
               value: valueItem,

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:isar_project/Providers/students/providers.dart';
 import 'package:isar_project/models/student.dart';
@@ -99,25 +100,27 @@ class _StudentsScreenState extends ConsumerState<StudentsScreen> {
                                 itemCount: foundStudents.length,
                                 shrinkWrap: true,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return ListTile(
-                                    onTap: () {
-                                      context.push(
-                                          "/studentDetails?id=${foundStudents[index].id}");
-                                    },
-                                    focusColor: kFoamColor,
-                                    title: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 40),
-                                      child: Text(
-                                        foundStudents[index].name,
-                                        style: const TextStyle(fontSize: 20),
+                                  return Slidable(
+                                    child: ListTile(
+                                      onTap: () {
+                                        context.push(
+                                            "/studentDetails?id=${foundStudents[index].id}");
+                                      },
+                                      focusColor: kFoamColor,
+                                      title: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 40),
+                                        child: Text(
+                                          foundStudents[index].name,
+                                          style: const TextStyle(fontSize: 20),
+                                        ),
                                       ),
+                                      leading: CircleAvatar(
+                                          backgroundColor: kDarkGreenColor,
+                                          child: Text('${index + 1}')),
+                                      trailing:
+                                          const Icon(Icons.arrow_forward_ios),
                                     ),
-                                    leading: CircleAvatar(
-                                        backgroundColor: kDarkGreenColor,
-                                        child: Text('${index + 1}')),
-                                    trailing:
-                                        const Icon(Icons.arrow_forward_ios),
                                   );
                                 }),
                       ),

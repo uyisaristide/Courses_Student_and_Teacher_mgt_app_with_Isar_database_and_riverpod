@@ -97,14 +97,14 @@ class _TeacherRegisterScreenState extends ConsumerState<TeacherRegisterScreen> {
                             keyboardType: TextInputType.name,
                             onChanged: (value) {},
                           ),
-                          CustomDropdown(
-                              itemValue: genderItem,
-                              itemsList: genderItems,
-                              hint: 'Gender'),
-                          CustomDropdown(
-                              itemValue: departmentItem,
-                              itemsList: departmentItems,
-                              hint: 'Department'),
+                          // CustomDropdown(
+                          //     itemValue: genderItem,
+                          //     itemsList: genderItems,
+                          //     hint: 'Gender'),
+                          // CustomDropdown(
+                          //     itemValue: departmentItem,
+                          //     itemsList: departmentItems,
+                          //     hint: 'Department'),
                           SizedBox(
                             height: 200,
                             child: listCourse.isEmpty

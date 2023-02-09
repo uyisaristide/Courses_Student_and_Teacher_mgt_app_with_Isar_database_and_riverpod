@@ -11,4 +11,19 @@ class StudentDetailsNotifier extends StateNotifier<ResponseInfo<Student>> {
     state.data = isarDb.students.getSync(id);
     return state;
   }
+
+  // updateStudent(int id, Student studentUpdate) async {
+  //   await isarDb.writeTxn(() async {
+  //     var student = await isarDb.students.get(id);
+  //     // student = studentUpdate;
+  //     student!.name = studentUpdate.name;
+  //     student.courses = studentUpdate.courses;
+  //     student.department = studentUpdate.department;
+  //     student.gender = studentUpdate.gender;
+  //     student.regNumber = studentUpdate.regNumber;
+
+  //     await isarDb.students.put(student);
+  //   });
+  //   return state;
+  // }
 }
