@@ -38,35 +38,42 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
   List departmentItems = ['CSC', 'IT', 'IS', 'Science'];
   String departmentItem = 'IT';
 
-  preFillData(Student? student) {
+  fillData() {
+    var detailsState = ref.read(studentDetailProvider);
+    var details = detailsState.data;
     if (widget.id != null) {
-      nameController.text = student!.name;
-      regNumberController.text = student.regNumber;
-      genderItem = student.gender;
-      departmentItem = student.department;
+      nameController.text = details!.name;
+      regNumberController.text = details.regNumber;
+      genderItem = details.gender;
+      departmentItem = details.department;
 
+      ref.read(selectedCourseProvider.notifier).state =
+          details.courses.toList();
     }
   }
 
   @override
   void initState() {
-    ref.read(createCourseProvider.notifier).getAllCourses();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(createCourseProvider.notifier).getAllCourses();
 
-    if (widget.id != null) {
-      ref
-          .read(studentDetailProvider.notifier)
-          .getStudentDetails(int.parse('${widget.id}'));
-    }
-    preFillData(ref.read(studentDetailProvider).data);
+      if (widget.id != null) {
+        ref
+            .read(studentDetailProvider.notifier)
+            .getStudentDetails(int.parse('${widget.id}'));
+
+        fillData();
+      }
+    });
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    
-    var student = ref.watch(studentDetailProvider).data;
     var listCourse = ref.watch(createCourseProvider);
     var selectedCourses = ref.watch(selectedCourseProvider);
+    print('selected courses: ${selectedCourses.length}');
     return Material(
       child: Stack(
         children: [
@@ -130,9 +137,10 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                             },
                           ),
                           CustomDropdown(
-                              itemValue: departmentItem,
-                              itemsList: departmentItems,
-                              hint: 'Department',onChanged: (newValue) {
+                            itemValue: departmentItem,
+                            itemsList: departmentItems,
+                            hint: 'Department',
+                            onChanged: (newValue) {
                               setState(() {
                                 departmentItem = newValue as String;
                               });
@@ -161,16 +169,28 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                                       return CheckboxListTile(
                                         title:
                                             Text(listCourse[index].couseName),
-                                        value: listCourse[index].isSelected,
-                                        selected: listCourse[index].isSelected,
+                                        value: selectedCourses
+                                                .where((element) =>
+                                                    element.id ==
+                                                    listCourse[index].id)
+                                                .isNotEmpty
+                                            ? true
+                                            : false,
+                                        selected: selectedCourses
+                                            .where((element) =>
+                                                element.id ==
+                                                listCourse[index].id)
+                                            .isNotEmpty,
                                         onChanged: (value) {
-                                          listCourse[index].isSelected = value!;
                                           if (selectedCourses
-                                              .contains(listCourse[index])) {
+                                              .where((element) =>
+                                                  element.id ==
+                                                  listCourse[index].id)
+                                              .isNotEmpty) {
                                             var rem = selectedCourses
                                                 .where((element) =>
-                                                    element !=
-                                                    listCourse[index])
+                                                    element.id !=
+                                                    listCourse[index].id)
                                                 .toList();
                                             ref
                                                 .read(selectedCourseProvider
@@ -201,7 +221,7 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                           label: widget.id == null
                               ? 'createStudent.register'.tr()
                               : 'Update',
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               if (selectedCourses.isEmpty) {
                                 return ScaffoldMessenger.of(context)
@@ -240,7 +260,7 @@ class _StudentRegisterScreenState extends ConsumerState<StudentRegisterScreen> {
                                   ref
                                       .read(studentProvider.notifier)
                                       .updateStudent(int.parse('${widget.id}'),
-                                          newStudent);
+                                          newStudent,newStudent.courses);
                                 }
 
                                 context.pop();

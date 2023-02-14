@@ -51,6 +51,7 @@ class RegisterScreen extends StatelessWidget {
                             ).tr(),
                             const SizedBox(height: 40.0),
                             CustomTextField(
+                              // key: '',
                               validator: (value) =>
                                   Validators.validateName(value!),
                               hintText: 'signUp.form.name'.tr(),

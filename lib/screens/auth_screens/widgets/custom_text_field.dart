@@ -4,7 +4,7 @@ import '../../../constants.dart';
 
 class CustomTextField extends StatelessWidget {
   CustomTextField({
-    this.initialValue,
+    this.fieldKey,
     this.controller,
     required this.label,
     this.validator,
@@ -19,7 +19,7 @@ class CustomTextField extends StatelessWidget {
 
   final String label;
   final String hintText;
-  final String? initialValue;
+  final Key? fieldKey;
   final IconData icon;
   final bool obscureText;
   final TextInputType keyboardType;
@@ -70,7 +70,7 @@ class CustomTextField extends StatelessWidget {
             borderSide: BorderSide(color: kDarkGreenColor),
           ),
         ),
-        initialValue:initialValue ,
+        key:fieldKey ,
         onChanged: onChanged,
       ),
     );

@@ -86,10 +86,6 @@ class _StudentDetailsScreenState extends ConsumerState<StudentDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // var student = ref
-    //     .watch(studentProvider)
-    //     .where((element) => element.id == int.parse(widget.id))
-    //     .first;
     var student = ref.watch(studentDetailProvider).data;
     var coursesList = student!.courses.toList();
     return Material(
