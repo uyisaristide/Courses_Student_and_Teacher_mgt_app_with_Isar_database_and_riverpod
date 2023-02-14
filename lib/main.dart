@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:isar_project/database/isar.dart';
-import 'package:isar_project/models/course.dart';
-import 'package:isar_project/models/student.dart';
-import 'package:isar_project/models/teacher.dart';
 import 'package:isar_project/screens/auth_screens/login.dart';
 import 'package:isar_project/screens/auth_screens/register.dart';
 import 'package:isar_project/screens/courses_screen/course_details.dart';
@@ -107,7 +104,6 @@ final _router = GoRouter(
     GoRoute(
       path: '/courseDetails',
       builder: (context, state) {
-        // Student student = state.extra as Student;
         var id = state.queryParams['id'];
         return CourseDetailsScreen(
           id: "$id",
@@ -139,7 +135,6 @@ final _router = GoRouter(
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

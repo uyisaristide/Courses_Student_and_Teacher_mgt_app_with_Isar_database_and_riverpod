@@ -1,40 +1,66 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-Widget settingLocale({required Widget widgets, required Locale startLocal}) {
-  return EasyLocalization(
+import 'json_loader.dart';
+
+
+Future<Widget> settingLocal(
+    {required Widget widget,
+    required Locale startLocal,
+    List<Override> overrides = const []}) async {
+  var path =
+      "assets/translations/${startLocal.toStringWithSeparator(separator: "-")}.json";
+  var s = json.decode(await rootBundle.loadString(path));
+  return Builder(builder: (context) {
+    return EasyLocalization(
+      fallbackLocale: const Locale('en', 'US'),
+      useFallbackTranslations: true,
+      assetLoader: JsonAssetLoader(data: Map<String, dynamic>.from(s)),
       supportedLocales: const [
         Locale('en', 'US'),
         Locale('fr', 'FR'),
         Locale('rw', 'RW')
       ],
-      assetLoader: const RootBundleAssetLoader(),
+      saveLocale: false,
       startLocale: startLocal,
-      useFallbackTranslations: true,
       path: 'assets/translations',
-      child: ProviderScope(child: Builder(builder: (BuildContext context) {
-        return MaterialApp.router(
-          
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          
-          routerDelegate: getGoRouter(widgets).routerDelegate,
-            routeInformationParser: getGoRouter(widgets).routeInformationParser,
-            routeInformationProvider: getGoRouter(widgets).routeInformationProvider,
-          debugShowCheckedModeBanner: false,
-        );
-      })));
+      child: ProviderScope(
+        overrides: overrides,
+        child: Builder(
+          builder: (BuildContext context) {
+            return MaterialApp.router(
+              localizationsDelegates: [
+                ...context.localizationDelegates,
+                // RwCupertinoLocalizations.delegate,
+                // RwMaterialLocalizations.delegate
+              ],
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              debugShowCheckedModeBanner: false,
+              routerDelegate: getGoRouter(widget).routerDelegate,
+              routeInformationParser:
+                  getGoRouter(widget).routeInformationParser,
+              routeInformationProvider:
+                  getGoRouter(widget).routeInformationProvider,
+            );
+          },
+        ),
+      ),
+    );
+  });
 }
 
 GoRouter getGoRouter(Widget w) {
   return GoRouter(routes: [
     GoRoute(
-        path: '/languages',
+        path: '/',
         builder: (context, state) {
           return Material(child: w);
         })
-  ]);
+  ], initialLocation: "/");
 }

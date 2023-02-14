@@ -11,7 +11,7 @@ class Course {
   late String couseName;
   late int credits;
 
-  bool isSelected = false;
+  // bool isSelected = false;
 
   @Backlink(to: "course")
   final teacher = IsarLink<Teacher>();

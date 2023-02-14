@@ -9,16 +9,20 @@ class StudentNotifier extends StateNotifier<List<Student>> {
   StudentNotifier() : super([]);
 
   Future<void> saveStudent(Student newStudent) async {
-    // await isarDb.writeTxn(() async {
-    //   await isarDb.students.put(newStudent);
-    // });
-    isarDb.writeTxnSync<int>(() => isarDb.students.putSync(newStudent));
-    state = [...state, newStudent];
+    await isarDb.writeTxn(() async {
+      await isarDb.students.put(newStudent);
+      await newStudent.courses.save();
+    });
   }
 
-  Future<List<Student>> getAllStudents() async {
+  getAllStudents() async {
     state = await isarDb.students.where().findAll();
-    return state;
+
+    var usersStream = isarDb.students.where().watch();
+
+    usersStream.listen((event) {
+      state = event;
+    });
   }
 
   Future<List<Student>> getStudentFor(Course course) async {
@@ -36,19 +40,21 @@ class StudentNotifier extends StateNotifier<List<Student>> {
     });
   }
 
-   updateStudent(int id, Student studentUpdate) async {
+  updateStudent(int id, Student studentUpdate, courses) async {
     await isarDb.writeTxn(() async {
-      var student = await isarDb.students.get(id);
-      // student = studentUpdate;
-      student!.name = studentUpdate.name;
-      student.courses = studentUpdate.courses;
-      student.department = studentUpdate.department;
-      student.gender = studentUpdate.gender;
-      student.regNumber = studentUpdate.regNumber;
+      studentUpdate.id = id;
+      studentUpdate.courses = courses;
+      print("Courses for ${studentUpdate.name}: ");
+      print(studentUpdate.courses.map((e) => e.couseName));
+      //  studentUpdate.courses.clear();
+      
+      await isarDb.students.put(studentUpdate);
+      studentUpdate.courses.save();
+      await studentUpdate.courses.reset();
 
-      await isarDb.students.put(student);
+      // isarDb.writeTxn(() => studentUpdate.courses.reset());
     });
+
     return state;
   }
-  
 }

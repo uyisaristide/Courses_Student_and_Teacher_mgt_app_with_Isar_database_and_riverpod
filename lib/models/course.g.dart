@@ -26,11 +26,6 @@ const CourseSchema = CollectionSchema(
       id: 1,
       name: r'credits',
       type: IsarType.long,
-    ),
-    r'isSelected': PropertySchema(
-      id: 2,
-      name: r'isSelected',
-      type: IsarType.bool,
     )
   },
   estimateSize: _courseEstimateSize,
@@ -80,7 +75,6 @@ void _courseSerialize(
 ) {
   writer.writeString(offsets[0], object.couseName);
   writer.writeLong(offsets[1], object.credits);
-  writer.writeBool(offsets[2], object.isSelected);
 }
 
 Course _courseDeserialize(
@@ -94,7 +88,6 @@ Course _courseDeserialize(
     credits: reader.readLong(offsets[1]),
   );
   object.id = id;
-  object.isSelected = reader.readBool(offsets[2]);
   return object;
 }
 
@@ -109,8 +102,6 @@ P _courseDeserializeProp<P>(
       return (reader.readString(offset)) as P;
     case 1:
       return (reader.readLong(offset)) as P;
-    case 2:
-      return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -440,16 +431,6 @@ extension CourseQueryFilter on QueryBuilder<Course, Course, QFilterCondition> {
       ));
     });
   }
-
-  QueryBuilder<Course, Course, QAfterFilterCondition> isSelectedEqualTo(
-      bool value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'isSelected',
-        value: value,
-      ));
-    });
-  }
 }
 
 extension CourseQueryObject on QueryBuilder<Course, Course, QFilterCondition> {}
@@ -549,18 +530,6 @@ extension CourseQuerySortBy on QueryBuilder<Course, Course, QSortBy> {
       return query.addSortBy(r'credits', Sort.desc);
     });
   }
-
-  QueryBuilder<Course, Course, QAfterSortBy> sortByIsSelected() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isSelected', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Course, Course, QAfterSortBy> sortByIsSelectedDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isSelected', Sort.desc);
-    });
-  }
 }
 
 extension CourseQuerySortThenBy on QueryBuilder<Course, Course, QSortThenBy> {
@@ -599,18 +568,6 @@ extension CourseQuerySortThenBy on QueryBuilder<Course, Course, QSortThenBy> {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
-
-  QueryBuilder<Course, Course, QAfterSortBy> thenByIsSelected() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isSelected', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Course, Course, QAfterSortBy> thenByIsSelectedDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isSelected', Sort.desc);
-    });
-  }
 }
 
 extension CourseQueryWhereDistinct on QueryBuilder<Course, Course, QDistinct> {
@@ -624,12 +581,6 @@ extension CourseQueryWhereDistinct on QueryBuilder<Course, Course, QDistinct> {
   QueryBuilder<Course, Course, QDistinct> distinctByCredits() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'credits');
-    });
-  }
-
-  QueryBuilder<Course, Course, QDistinct> distinctByIsSelected() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'isSelected');
     });
   }
 }
@@ -650,12 +601,6 @@ extension CourseQueryProperty on QueryBuilder<Course, Course, QQueryProperty> {
   QueryBuilder<Course, int, QQueryOperations> creditsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'credits');
-    });
-  }
-
-  QueryBuilder<Course, bool, QQueryOperations> isSelectedProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'isSelected');
     });
   }
 }
