@@ -15,125 +15,111 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Stack(
-        children: [
-          Scaffold(
-            body: Form(
-              key: _formKey,
-              child: SafeArea(
-                child: SingleChildScrollView(
-                  child: Container(
-                    constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.9,
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: SafeArea(
+              child: Container(
+                // constraints: BoxConstraints(
+                //   maxHeight: MediaQuery.of(context).size.height * 0.9,
+                // ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 150.0),
+                    Text(
+                      'signUp.title',
+                      style: TextStyle(
+                        fontSize: 32.0,
+                        fontWeight: FontWeight.w600,
+                        color: kDarkGreenColor,
+                      ),
+                    ).tr(),
+                    const SizedBox(height: 10.0),
+                    Text(
+                      'signUp.subtitle',
+                      style: TextStyle(
+                        color: kGreyColor,
+                        fontSize: 16.0,
+                      ),
+                    ).tr(),
+                    const SizedBox(height: 40.0),
+                    CustomTextField(
+                      // key: '',
+                      validator: (value) => Validators.validateName(value!),
+                      hintText: 'signUp.form.name'.tr(),
+                      label: 'signUp.form.name'.tr(),
+                      icon: Icons.person,
+                      keyboardType: TextInputType.name,
+                      onChanged: (value) {},
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'signUp.title',
-                              style: TextStyle(
-                                fontSize: 32.0,
-                                fontWeight: FontWeight.w600,
-                                color: kDarkGreenColor,
-                              ),
-                            ).tr(),
-                            const SizedBox(height: 10.0),
-                            Text(
-                              'signUp.subtitle',
-                              style: TextStyle(
-                                color: kGreyColor,
-                                fontSize: 16.0,
-                              ),
-                            ).tr(),
-                            const SizedBox(height: 40.0),
-                            CustomTextField(
-                              // key: '',
-                              validator: (value) =>
-                                  Validators.validateName(value!),
-                              hintText: 'signUp.form.name'.tr(),
-                              label: 'signUp.form.name'.tr(),
-                              icon: Icons.person,
-                              keyboardType: TextInputType.name,
-                              onChanged: (value) {},
+                    CustomTextField(
+                      validator: (value) => Validators.validateEmail(value!),
+                      hintText: 'signUp.form.email'.tr(),
+                      label: 'signUp.form.email'.tr(),
+                      icon: Icons.mail,
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: (value) {},
+                    ),
+                    CustomTextField(
+                      validator: (value) => Validators.validatePassword(value!),
+                      hintText: 'signUp.form.password'.tr(),
+                      label: 'signUp.form.password'.tr(),
+                      icon: Icons.lock,
+                      keyboardType: TextInputType.name,
+                      onChanged: (value) {},
+                    ),
+                    CustomTextField(
+                      validator: (value) => Validators.validatePassword(value!),
+                      hintText: 'signUp.form.confirm'.tr(),
+                      label: 'signUp.form.confirm'.tr(),
+                      icon: Icons.lock,
+                      keyboardType: TextInputType.name,
+                      onChanged: (value) {},
+                    ),
+                    const SizedBox(height: 15.0),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'signUp.question',
+                            style: TextStyle(fontSize: 14.0),
+                          ).tr(),
+                          TextButton(
+                            style: ButtonStyle(
+                              foregroundColor:
+                                  MaterialStateProperty.all(kDarkGreenColor),
                             ),
-                            CustomTextField(
-                              validator: (value) =>
-                                  Validators.validateEmail(value!),
-                              hintText: 'signUp.form.email'.tr(),
-                              label: 'signUp.form.email'.tr(),
-                              icon: Icons.mail,
-                              keyboardType: TextInputType.emailAddress,
-                              onChanged: (value) {},
-                            ),
-                            CustomTextField(
-                              validator: (value) =>
-                                  Validators.validatePassword(value!),
-                              hintText: 'signUp.form.password'.tr(),
-                              label: 'signUp.form.password'.tr(),
-                              icon: Icons.lock,
-                              keyboardType: TextInputType.name,
-                              onChanged: (value) {},
-                            ),
-                            CustomTextField(
-                              validator: (value) =>
-                                  Validators.validatePassword(value!),
-                              hintText: 'signUp.form.confirm'.tr(),
-                              label: 'signUp.form.confirm'.tr(),
-                              icon: Icons.lock,
-                              keyboardType: TextInputType.name,
-                              onChanged: (value) {},
-                            ),
-                            const SizedBox(height: 15.0),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text(
-                                    'signUp.question',
-                                    style: TextStyle(fontSize: 14.0),
-                                  ).tr(),
-                                  TextButton(
-                                    style: ButtonStyle(
-                                      foregroundColor:
-                                          MaterialStateProperty.all(
-                                              kDarkGreenColor),
-                                    ),
-                                    onPressed: () {
-                                      context.push('/login');
-                                    },
-                                    child: const Text(
-                                      'signUp.login',
-                                      style: TextStyle(fontSize: 14.0),
-                                    ).tr(),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(left: 20.0, right: 20.0),
-                          child: AuthenticationButton(
-                            label: 'signUp.signUp'.tr(),
                             onPressed: () {
-                              if (_formKey.currentState!.validate()) ;
+                              context.push('/login');
                             },
-                          ),
-                        )
-                      ],
+                            child: const Text(
+                              'signUp.login',
+                              style: TextStyle(fontSize: 14.0),
+                            ).tr(),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                      child: AuthenticationButton(
+                        label: 'signUp.signUp'.tr(),
+                        onPressed: () {
+                          // if (_formKey.currentState!.validate()) ;
+                          _formKey.currentState!.validate();
+                        },
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }
