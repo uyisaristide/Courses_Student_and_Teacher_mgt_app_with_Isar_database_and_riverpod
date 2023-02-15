@@ -46,7 +46,7 @@ class RegisterScreen extends StatelessWidget {
                     ).tr(),
                     const SizedBox(height: 40.0),
                     CustomTextField(
-                      // key: '',
+                      key: const Key('name'),
                       validator: (value) => Validators.validateName(value!),
                       hintText: 'signUp.form.name'.tr(),
                       label: 'signUp.form.name'.tr(),
@@ -54,7 +54,7 @@ class RegisterScreen extends StatelessWidget {
                       keyboardType: TextInputType.name,
                       onChanged: (value) {},
                     ),
-                    CustomTextField(
+                    CustomTextField(key: const Key('email'),
                       validator: (value) => Validators.validateEmail(value!),
                       hintText: 'signUp.form.email'.tr(),
                       label: 'signUp.form.email'.tr(),
@@ -62,7 +62,7 @@ class RegisterScreen extends StatelessWidget {
                       keyboardType: TextInputType.emailAddress,
                       onChanged: (value) {},
                     ),
-                    CustomTextField(
+                    CustomTextField(key: const Key('password'),
                       validator: (value) => Validators.validatePassword(value!),
                       hintText: 'signUp.form.password'.tr(),
                       label: 'signUp.form.password'.tr(),
@@ -70,7 +70,7 @@ class RegisterScreen extends StatelessWidget {
                       keyboardType: TextInputType.name,
                       onChanged: (value) {},
                     ),
-                    CustomTextField(
+                    CustomTextField(key: const Key('cpassword'),
                       validator: (value) => Validators.validatePassword(value!),
                       hintText: 'signUp.form.confirm'.tr(),
                       label: 'signUp.form.confirm'.tr(),
